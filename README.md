@@ -31,7 +31,7 @@ https://media.giphy.com/media/a93jwI0wkWTQs/giphy.gif?cid=ecf05e47ky44cdvz1c10ap
 
 - 
 [@Maxime](https://github.com/Aximme)
-[@Simon](https://github.com/Aximme)
+[@Simon](https://github.com/S1M0Z)
 [@Lena](https://github.com/Aximme)
 [@Melanie](https://github.com/Aximme)
 

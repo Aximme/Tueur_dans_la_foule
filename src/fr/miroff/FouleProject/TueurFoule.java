@@ -9,8 +9,8 @@ import java.awt.event.ActionListener;
 import java.util.Random;
 
 public class TueurFoule extends JFrame {
-    private final int WINDOW_WIDTH = 600;
-    private final int WINDOW_HEIGHT = 400;
+    private final int WINDOW_WIDTH = 800;
+    private final int WINDOW_HEIGHT = 600;
     private int NbrBandit = 1;
     private int NbrCivil = 1;
     private int NbrPolicier = 1;
@@ -68,8 +68,11 @@ public class TueurFoule extends JFrame {
         });
 
         //Slide de vitesse
-        speedSlider = new JSlider(1, 50, 1); //Base à 1 --> va de 1 à 100
-        controlPanel.add(speedSlider);
+        JPanel buttonPanel = new JPanel(new BorderLayout());
+        speedSlider = new JSlider(1, 50, 1); //Base à 1 --> va de 1 à 50
+        buttonPanel.add(speedSlider);
+        add(buttonPanel, BorderLayout.SOUTH);
+
 // Ajoutez un écouteur de changement pour le curseur de vitesse global
         speedSlider.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent e) {
@@ -86,10 +89,9 @@ public class TueurFoule extends JFrame {
         controlPanel.add(blueTextField);
         controlPanel.add(generateButton);
         controlPanel.add(stopButton);
-
         add(controlPanel, BorderLayout.NORTH);
 
-        JPanel buttonPanel = new JPanel(new BorderLayout());
+
 
         add(buttonPanel, BorderLayout.SOUTH);
 
