@@ -4,14 +4,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Random;
 
-public class TueurFoule extends JFrame {
+public class Window extends JFrame {
     private final int WINDOW_WIDTH = 800;
     private final int WINDOW_HEIGHT = 600;
     private int NbrBandit = 1;
     private int NbrCivil = 1;
     private int NbrPolicier = 1;
 
-    public TueurFoule() {
+    public Window() {
         setTitle("Tueurs dans la Foule !");
         setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -45,8 +45,16 @@ public class TueurFoule extends JFrame {
                 NbrPolicier = Integer.parseInt(blueTextField.getText());
                 repaint();
             } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(this, "Entrez un nombre correct svp");
+                JOptionPane.showMessageDialog(this, "⚠ Entrée incorrecte.");
             }
+        });
+
+        JButton stopButton = new JButton("STOP");
+        stopButton.setBackground(Color.RED);
+        stopButton.setForeground(Color.RED);
+        stopButton.addActionListener(e -> {
+            //stopMovement();
+            JOptionPane.showMessageDialog(this, "⚠ Les points ne sont pas en mouvement.");
         });
 
         controlPanel.add(redLabel);
@@ -56,6 +64,7 @@ public class TueurFoule extends JFrame {
         controlPanel.add(blueLabel);
         controlPanel.add(blueTextField);
         controlPanel.add(generateButton);
+        controlPanel.add(stopButton);
         add(controlPanel, BorderLayout.NORTH);
 
         setVisible(true);
@@ -90,9 +99,4 @@ public class TueurFoule extends JFrame {
         g.fillOval(x, y, size, size);
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            new TueurFoule();
-        });
-    }
 }
