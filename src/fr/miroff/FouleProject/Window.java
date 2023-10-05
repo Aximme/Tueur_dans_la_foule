@@ -9,7 +9,7 @@ import java.util.Random;
 
 //Bandits = 1 | Civils = 2 | Policier = 3
 
-
+//Test commit direct depuis Intellij
 public class Window extends JFrame {
     private final int WINDOW_WIDTH = 800;
     private final int WINDOW_HEIGHT = 600;
