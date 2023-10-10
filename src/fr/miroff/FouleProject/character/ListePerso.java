@@ -16,6 +16,7 @@ public class ListePerso {
         int x = (int) point.getX();
         int y = (int) point.getY();
         pointMatrix[x][y] = type;
+
     }
 
     public int[][] getListePerso() {
@@ -28,6 +29,11 @@ public class ListePerso {
                 System.out.print(pointMatrix[x][y] + " ");
             }
             System.out.println(); // Passer à la ligne après chaque ligne de la matrice
+        }
+    }
+    public void supprimerAgent(int x, int y) {
+        if (x >= 0 && x < pointMatrix.length && y >= 0 && y < pointMatrix[x].length) {
+            pointMatrix[x][y] = 0; // Mettre la valeur à 0 pour supprimer l'agent
         }
     }
 }

@@ -35,10 +35,26 @@ public class Personnage {
         this.deplacement = deplacement;
     }
 
-    public boolean hurt(){
-        this.health -= 1;
-        return this.health == 0;
+    private ListePerso pointManager; // Ajoutez cette référence
+
+    // Autres membres de la classe...
+
+    public Personnage(int x, int y, ListePerso pointManager) {
+        this.x = x;
+        this.y = y;
+        this.pointManager = pointManager; // Stockez la référence
     }
 
+    public boolean hurt() {
+        this.health -= 1;
+        boolean isDead = this.health == 0;
+
+        if (isDead) {
+            // Appeler la méthode de suppression de l'agent en utilisant pointManager
+            pointManager.supprimerAgent(this.x, this.y);
+        }
+
+        return isDead;
+    }
 }
 

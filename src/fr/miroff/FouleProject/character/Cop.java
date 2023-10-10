@@ -5,6 +5,7 @@ public class Cop extends Personnage {
         super(x, y);
         Object deplacement1 = this.deplacement;
         this.health = 1;
+
     }
 
     public boolean attack(Bandit bandit){

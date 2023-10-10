@@ -1,5 +1,6 @@
 package fr.miroff.FouleProject;
 
+import com.sun.nio.sctp.PeerAddressChangeNotification;
 import fr.miroff.FouleProject.character.ListePerso;
 
 import javax.swing.*;
@@ -16,7 +17,7 @@ public class Window extends JFrame {
     private int NbrBandit = 1;
     private int NbrCivil = 1;
     private int NbrPolicier = 1;
-    private int[][] pointMatrix;
+    private int[][] pointMatrice;
     private ListePerso pointManager;
 
 
@@ -27,8 +28,9 @@ public class Window extends JFrame {
         setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        pointMatrix = new int[WINDOW_WIDTH][WINDOW_HEIGHT];
+        pointMatrice = new int[WINDOW_WIDTH][WINDOW_HEIGHT];
         pointManager = new ListePerso(WINDOW_WIDTH, WINDOW_HEIGHT);
+
 
 
         JPanel panel = new JPanel() {
@@ -92,14 +94,17 @@ public class Window extends JFrame {
             int x = rand.nextInt(WINDOW_WIDTH);
             int y = rand.nextInt(WINDOW_HEIGHT);
             drawCircle(g, x, y, 10);
-            pointManager.addPoint(new Point(x, y), 1);        }
+            pointManager.addPoint(new Point(x, y), 1);
+
+        }
 
         for (int i = 0; i < NbrCivil; i++) {
             g.setColor(Color.BLACK);
             int x = rand.nextInt(WINDOW_WIDTH);
             int y = rand.nextInt(WINDOW_HEIGHT);
             drawCircle(g, x, y, 10);
-            pointManager.addPoint(new Point(x, y), 2);            }
+            pointManager.addPoint(new Point(x, y), 2);
+            }
 
         for (int i = 0; i < NbrPolicier; i++) {
             g.setColor(Color.BLUE);
@@ -108,8 +113,16 @@ public class Window extends JFrame {
             drawCircle(g, x, y, 10);
             pointManager.addPoint(new Point(x, y), 3);
 
+
         }
+
+
+
         pointManager.afficherMatrice();
+
+
+
+
 
 
     }
