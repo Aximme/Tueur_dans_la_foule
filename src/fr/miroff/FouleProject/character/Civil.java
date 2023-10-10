@@ -1,7 +1,5 @@
     package fr.miroff.FouleProject.character;
 
-    import fr.miroff.FouleProject.coord.Coordinate;
-
     public class Civil extends Personnage {
 
         public Civil(int x, int y) {

@@ -1,9 +1,5 @@
 package fr.miroff.FouleProject.character;
 
-import fr.miroff.FouleProject.coord.Coordinate;
-
-import java.awt.*;
-
 public class Personnage {
     protected Object deplacement;
     protected int health;

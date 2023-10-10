@@ -10,6 +10,8 @@ public class Bandit extends Personnage {
         this.health = 1;
     }
 
+
+
     public boolean attack(Civil civil){
         return civil.hurt();
     }
