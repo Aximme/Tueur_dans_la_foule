@@ -1,21 +1,20 @@
-    package fr.miroff.FouleProject.character;
+package fr.miroff.FouleProject.character;
 
-    import java.util.Random;
+import java.util.Random;
 
-    public class Civil extends Personnage {
-        private static final Random RAND = new Random();
+public class Civil extends Personnage {
+    private static final Random RAND = new Random();
 
-        public Civil(int x, int y) {
-            super(x, y);
-            Object deplacement1 = this.deplacement;
-            this.health = 1;
-        }
-
-        public boolean tryToEscape() {
-            return RAND.nextInt(3) == 0;
-        }
-
+    public Civil(int x, int y) {
+        super(x, y);
+        this.health = 1;
     }
+
+    public boolean escape() {
+        return RAND.nextInt(3) == 0;
+    }
+
+}
 
 
 

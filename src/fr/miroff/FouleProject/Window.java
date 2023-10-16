@@ -1,10 +1,14 @@
 package fr.miroff.FouleProject;
 
-import com.sun.nio.sctp.PeerAddressChangeNotification;
-import fr.miroff.FouleProject.character.ListePerso;
+import fr.miroff.FouleProject.character.Bandit;
+import fr.miroff.FouleProject.character.Character;
+import fr.miroff.FouleProject.character.Civil;
+import fr.miroff.FouleProject.character.Cop;
+import fr.miroff.FouleProject.character.Personnage;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Random;
 
 
@@ -12,15 +16,15 @@ import java.util.Random;
 
 //Test commit direct depuis Intellij
 public class Window extends JFrame {
-    private final int WINDOW_WIDTH = 800;
-    private final int WINDOW_HEIGHT = 600;
-    private int NbrBandit = 1;
-    private int NbrCivil = 1;
-    private int NbrPolicier = 1;
-    private int[][] pointMatrice;
-    private ListePerso pointManager;
+    public static final int WINDOW_WIDTH = 800;
+    public static final int WINDOW_HEIGHT = 600;
+    private int banditRemaining = 1;
+    private int civilRemaining = 1;
+    private int copRemaining = 1;
+    public static final ArrayList<Personnage> characters = new ArrayList<>();
 
-
+    //private final int[][] pointMatrice;
+    //private final ListePerso pointManager;
 
 
     public Window() {
@@ -28,9 +32,8 @@ public class Window extends JFrame {
         setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        pointMatrice = new int[WINDOW_WIDTH][WINDOW_HEIGHT];
-        pointManager = new ListePerso(WINDOW_WIDTH, WINDOW_HEIGHT);
-
+        //pointMatrice = new int[WINDOW_WIDTH][WINDOW_HEIGHT];
+        //pointManager = new ListePerso(WINDOW_WIDTH, WINDOW_HEIGHT);
 
 
         JPanel panel = new JPanel() {
@@ -56,9 +59,9 @@ public class Window extends JFrame {
         generateButton.setForeground(Color.GREEN);
         generateButton.addActionListener(e -> {
             try {
-                NbrBandit = Integer.parseInt(redTextField.getText());
-                NbrCivil = Integer.parseInt(blackTextField.getText());
-                NbrPolicier = Integer.parseInt(blueTextField.getText());
+                banditRemaining = Integer.parseInt(redTextField.getText());
+                civilRemaining = Integer.parseInt(blackTextField.getText());
+                copRemaining = Integer.parseInt(blueTextField.getText());
                 repaint();
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(this, "⚠ Entrée incorrecte.");
@@ -89,44 +92,48 @@ public class Window extends JFrame {
     private void drawCircles(Graphics g) {
         Random rand = new Random();
 
-        for (int i = 0; i < NbrBandit; i++) {
+        for (int i = 0; i < banditRemaining; i++) {
             g.setColor(Color.RED);
             int x = rand.nextInt(WINDOW_WIDTH);
             int y = rand.nextInt(WINDOW_HEIGHT);
             drawCircle(g, x, y, 10);
-            pointManager.addPoint(new Point(x, y), 1);
+
+            characters.add(new Bandit(x,y));
+            //pointManager.addPoint(new Point(x, y), 1);
 
         }
 
-        for (int i = 0; i < NbrCivil; i++) {
+        for (int i = 0; i < civilRemaining; i++) {
             g.setColor(Color.BLACK);
             int x = rand.nextInt(WINDOW_WIDTH);
             int y = rand.nextInt(WINDOW_HEIGHT);
             drawCircle(g, x, y, 10);
-            pointManager.addPoint(new Point(x, y), 2);
-            }
 
-        for (int i = 0; i < NbrPolicier; i++) {
+            characters.add(new Civil(x,y));
+            //pointManager.addPoint(new Point(x, y), 2);
+        }
+
+        for (int i = 0; i < copRemaining; i++) {
             g.setColor(Color.BLUE);
             int x = rand.nextInt(WINDOW_WIDTH);
             int y = rand.nextInt(WINDOW_HEIGHT);
             drawCircle(g, x, y, 10);
-            pointManager.addPoint(new Point(x, y), 3);
+
+            characters.add(new Cop(x,y));
+            //pointManager.addPoint(new Point(x, y), 3);
 
 
         }
 
 
-
-        pointManager.afficherMatrice();
-
-
-
-
+        //pointManager.afficherMatrice();
 
 
     }
 
+    public void display(){
+        // TODO: 17/10/2023 HANDLE CHARACTER DISPLAY
+    }
 
     private void drawCircle(Graphics g, int x, int y, int size) {
         g.fillOval(x, y, size, size);
