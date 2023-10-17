@@ -1,7 +1,6 @@
 package fr.miroff.FouleProject;
 
 import fr.miroff.FouleProject.character.Bandit;
-import fr.miroff.FouleProject.character.Character;
 import fr.miroff.FouleProject.character.Civil;
 import fr.miroff.FouleProject.character.Cop;
 import fr.miroff.FouleProject.character.Personnage;
@@ -22,27 +21,44 @@ public class Window extends JFrame {
     private int civilRemaining = 1;
     private int copRemaining = 1;
     public static final ArrayList<Personnage> characters = new ArrayList<>();
+    private JPanel drawingPanel;
 
-    //private final int[][] pointMatrice;
-    //private final ListePerso pointManager;
+    private void generateCharacters() {
+        Random rand = new Random();
+        characters.clear();
 
+        for (int i = 0; i < banditRemaining; i++) {
+            int x = rand.nextInt(WINDOW_WIDTH);
+            int y = rand.nextInt(WINDOW_HEIGHT);
+            characters.add(new Bandit(x, y));
+        }
 
+        for (int i = 0; i < civilRemaining; i++) {
+            int x = rand.nextInt(WINDOW_WIDTH);
+            int y = rand.nextInt(WINDOW_HEIGHT);
+            characters.add(new Civil(x, y));
+        }
+
+        for (int i = 0; i < copRemaining; i++) {
+            int x = rand.nextInt(WINDOW_WIDTH);
+            int y = rand.nextInt(WINDOW_HEIGHT);
+            characters.add(new Cop(x, y));
+        }
+    }
     public Window() {
         setTitle("Tueurs dans la Foule !");
         setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        //pointMatrice = new int[WINDOW_WIDTH][WINDOW_HEIGHT];
-        //pointManager = new ListePerso(WINDOW_WIDTH, WINDOW_HEIGHT);
 
 
-        JPanel panel = new JPanel() {
+        drawingPanel = new JPanel() {
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 drawCircles(g);
             }
         };
-        add(panel);
+        add(drawingPanel);
 
         JPanel controlPanel = new JPanel(new FlowLayout());
 
@@ -62,11 +78,15 @@ public class Window extends JFrame {
                 banditRemaining = Integer.parseInt(redTextField.getText());
                 civilRemaining = Integer.parseInt(blackTextField.getText());
                 copRemaining = Integer.parseInt(blueTextField.getText());
+
+                generateCharacters();
                 repaint();
+
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(this, "⚠ Entrée incorrecte.");
             }
         });
+
 
         JButton stopButton = new JButton("STOP");
         stopButton.setBackground(Color.RED);
@@ -90,49 +110,20 @@ public class Window extends JFrame {
     }
 
     private void drawCircles(Graphics g) {
-        Random rand = new Random();
-
-        for (int i = 0; i < banditRemaining; i++) {
-            g.setColor(Color.RED);
-            int x = rand.nextInt(WINDOW_WIDTH);
-            int y = rand.nextInt(WINDOW_HEIGHT);
-            drawCircle(g, x, y, 10);
-
-            characters.add(new Bandit(x,y));
-            //pointManager.addPoint(new Point(x, y), 1);
-
+        for (Personnage character : characters) {
+            if (character instanceof Bandit) {
+                g.setColor(Color.RED);
+            } else if (character instanceof Civil) {
+                g.setColor(Color.BLACK);
+            } else if (character instanceof Cop) {
+                g.setColor(Color.BLUE);
+            }
+            drawCircle(g, character.getX(), character.getY(), 10);
         }
-
-        for (int i = 0; i < civilRemaining; i++) {
-            g.setColor(Color.BLACK);
-            int x = rand.nextInt(WINDOW_WIDTH);
-            int y = rand.nextInt(WINDOW_HEIGHT);
-            drawCircle(g, x, y, 10);
-
-            characters.add(new Civil(x,y));
-            //pointManager.addPoint(new Point(x, y), 2);
-        }
-
-        for (int i = 0; i < copRemaining; i++) {
-            g.setColor(Color.BLUE);
-            int x = rand.nextInt(WINDOW_WIDTH);
-            int y = rand.nextInt(WINDOW_HEIGHT);
-            drawCircle(g, x, y, 10);
-
-            characters.add(new Cop(x,y));
-            //pointManager.addPoint(new Point(x, y), 3);
-
-
-        }
-
-
-        //pointManager.afficherMatrice();
-
-
     }
 
-    public void display(){
-        // TODO: 17/10/2023 HANDLE CHARACTER DISPLAY
+    public void display() {
+        drawingPanel.repaint();
     }
 
     private void drawCircle(Graphics g, int x, int y, int size) {
