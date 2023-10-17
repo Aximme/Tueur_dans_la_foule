@@ -118,7 +118,7 @@ public class Window extends JFrame {
 
 
 
-        pointManager.afficherMatrice();
+       /// pointManager.afficherMatrice();
 
 
 
