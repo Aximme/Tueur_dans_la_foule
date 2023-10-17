@@ -25,6 +25,14 @@ public class Personnage {
             y -= 1;
     }
 
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
     private boolean isColliding(){
         // TODO: 17/10/2023 Handle collisions
         return false;

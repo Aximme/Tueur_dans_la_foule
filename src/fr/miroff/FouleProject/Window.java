@@ -1,7 +1,6 @@
 package fr.miroff.FouleProject;
 
 import fr.miroff.FouleProject.character.Bandit;
-import fr.miroff.FouleProject.character.Character;
 import fr.miroff.FouleProject.character.Civil;
 import fr.miroff.FouleProject.character.Cop;
 import fr.miroff.FouleProject.character.Personnage;
