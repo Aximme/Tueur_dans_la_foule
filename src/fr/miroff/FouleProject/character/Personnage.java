@@ -4,6 +4,7 @@ public class Personnage {
     protected int health;
     private int x;
     private int y;
+    private static boolean canMove = true;
 
     public Personnage(int x, int y) {
         this.x = x;
@@ -18,10 +19,18 @@ public class Personnage {
         return y;
     }
 
+    public static void stopMovements() {
+        canMove = false;
+    }
+
     public void move() {
+
+        if (!canMove) {
+            return;
+        }
         // Mouvement sur l'axe X
         if (Math.random() < 0.5) {
-            if (x < 1000) {
+            if (x < 800) {
                 x += 1;
             }
         } else if (x > 0) {
@@ -30,8 +39,7 @@ public class Personnage {
 
         // Mouvement sur l'axe Y
         if (Math.random() < 0.5) {
-            // supposons que 1000 est la hauteur maximale de l'écran
-            if (y < 1000) {
+            if (y < 600) {
                 y += 1;
             }
         } else if (y > 0) {

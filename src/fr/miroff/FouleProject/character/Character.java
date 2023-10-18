@@ -22,7 +22,7 @@ public class Character {
     public void move(List<Character> characters) {
         // Mouvement sur l'axe X
         if (Math.random() < 0.5) {
-            if (x < 1000) {
+            if (x < 800) {
                 x += 1;
             }
         } else if (x > 0) {
@@ -31,8 +31,7 @@ public class Character {
 
         // Mouvement sur l'axe Y
         if (Math.random() < 0.5) {
-            // supposons que 1000 est la hauteur maximale de l'écran
-            if (y < 1000) {
+            if (y < 600) {
                 y += 1;
             }
         } else if (y > 0) {

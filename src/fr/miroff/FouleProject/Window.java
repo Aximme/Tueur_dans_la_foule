@@ -4,6 +4,7 @@ import fr.miroff.FouleProject.character.Bandit;
 import fr.miroff.FouleProject.character.Civil;
 import fr.miroff.FouleProject.character.Cop;
 import fr.miroff.FouleProject.character.Character;
+import fr.miroff.FouleProject.character.Personnage;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,8 +16,8 @@ import java.util.Random;
 
 //Test commit direct depuis Intellij
 public class Window extends JFrame {
-    public static final int WINDOW_WIDTH = 800;
-    public static final int WINDOW_HEIGHT = 600;
+    public static final int WINDOW_WIDTH = 850;
+    public static final int WINDOW_HEIGHT = 650;
     private int banditRemaining = 1;
     private int civilRemaining = 1;
     private int copRemaining = 1;
@@ -92,7 +93,7 @@ public class Window extends JFrame {
         stopButton.setBackground(Color.RED);
         stopButton.setForeground(Color.RED);
         stopButton.addActionListener(e -> {
-            //stopMovement();
+            Personnage.stopMovements();
             JOptionPane.showMessageDialog(this, "⚠ Les points ne sont pas en mouvement.");
         });
 
