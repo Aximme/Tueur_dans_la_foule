@@ -1,6 +1,6 @@
 package fr.miroff.FouleProject.character;
 
-public class Bandit extends Personnage {
+public class Bandit extends Character {
     public Bandit(int x, int y) {
         super(x, y);
         this.health = 1;

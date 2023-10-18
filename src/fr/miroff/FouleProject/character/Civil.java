@@ -2,7 +2,7 @@ package fr.miroff.FouleProject.character;
 
 import java.util.Random;
 
-public class Civil extends Personnage {
+public class Civil extends Character {
     private static final Random RAND = new Random();
 
     public Civil(int x, int y) {

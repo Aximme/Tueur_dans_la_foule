@@ -1,9 +1,8 @@
 package fr.miroff.FouleProject;
 
-import fr.miroff.FouleProject.character.Personnage;
+import fr.miroff.FouleProject.character.Character;
 
 import javax.swing.*;
-import java.util.Scanner;
 import java.util.concurrent.*;
 
 public class Main {
@@ -17,21 +16,24 @@ public class Main {
             while (true) {
                 CountDownLatch latch = new CountDownLatch(Window.characters.size());
 
-                for (Personnage character : Window.characters) {
+                for (Character character : Window.characters) {
                     executor.submit(() -> {
-                        character.move();
+                        character.move(Window.characters);
                         latch.countDown();
                     });
                 }
 
+
                 try {
                     latch.await();
+
+                    Window.characters.removeIf(character -> !character.isAlive());
 
                     if (mainWindow != null) {
                         mainWindow.display();
                     }
 
-                    Thread.sleep(20);
+                    Thread.sleep(10);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                     break;

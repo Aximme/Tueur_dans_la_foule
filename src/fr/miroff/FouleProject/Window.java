@@ -3,7 +3,7 @@ package fr.miroff.FouleProject;
 import fr.miroff.FouleProject.character.Bandit;
 import fr.miroff.FouleProject.character.Civil;
 import fr.miroff.FouleProject.character.Cop;
-import fr.miroff.FouleProject.character.Personnage;
+import fr.miroff.FouleProject.character.Character;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,7 +20,7 @@ public class Window extends JFrame {
     private int banditRemaining = 1;
     private int civilRemaining = 1;
     private int copRemaining = 1;
-    public static final ArrayList<Personnage> characters = new ArrayList<>();
+    public static final ArrayList<Character> characters = new ArrayList<>();
     private JPanel drawingPanel;
 
     private void generateCharacters() {
@@ -110,7 +110,7 @@ public class Window extends JFrame {
     }
 
     private void drawCircles(Graphics g) {
-        for (Personnage character : characters) {
+        for (Character character : characters) {
             if (character instanceof Bandit) {
                 g.setColor(Color.RED);
             } else if (character instanceof Civil) {
