@@ -5,6 +5,9 @@ public class Character {
     protected int health;
     private int x;
     private int y;
+    private static boolean canMove = true;
+
+
 
     public Character(int x, int y) {
         this.x = x;
@@ -18,8 +21,15 @@ public class Character {
     public int getY() {
         return y;
     }
-
+    public static void stopMovements() {
+        canMove = false;
+    }
     public void move(List<Character> characters) {
+        if (!canMove) {
+            return;
+        }
+
+
         // Mouvement sur l'axe X
         if (Math.random() < 0.5) {
             if (x < 800) {
