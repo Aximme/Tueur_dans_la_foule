@@ -8,9 +8,7 @@ Implémentation d'un Système Multi-Agents (SMA)
 
 ## Demo
 
-Insert gif or link to demo
-
-https://media.giphy.com/media/a93jwI0wkWTQs/giphy.gif?cid=ecf05e47ky44cdvz1c10aprjm4k7wh8bzckw1pb4vc2311xc&ep=v1_gifs_search&rid=giphy.gif&ct=g
+[Demonstration fonctionnement SMA](https://media.giphy.com/media/a93jwI0wkWTQs/giphy.gif?cid=ecf05e47ky44cdvz1c10aprjm4k7wh8bzckw1pb4vc2311xc&ep=v1_gifs_search&rid=giphy.gif&ct=g)
 
 ## Attendus
 
