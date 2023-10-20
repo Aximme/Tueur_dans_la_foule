@@ -1,8 +1,8 @@
 package fr.miroff.FouleProject.character;
 
 public class Cop extends Character {
-    public Cop(int x, int y) {
-        super(x, y);
+    public Cop(int x, int y, int movementSpeed) {
+        super(x, y,movementSpeed);
         this.health = 1;
 
     }

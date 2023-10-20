@@ -22,6 +22,10 @@ public class Window extends JFrame {
     private int copRemaining = 1;
     public static final ArrayList<Character> characters = new ArrayList<>();
     private JPanel drawingPanel;
+    private JSlider speedSlider;
+
+    private int movementSpeed=3;
+
 
     private void generateCharacters() {
         Random rand = new Random();
@@ -30,19 +34,22 @@ public class Window extends JFrame {
         for (int i = 0; i < banditRemaining; i++) {
             int x = rand.nextInt(WINDOW_WIDTH);
             int y = rand.nextInt(WINDOW_HEIGHT);
-            characters.add(new Bandit(x, y));
+            characters.add(new Bandit(x, y,movementSpeed));
         }
 
         for (int i = 0; i < civilRemaining; i++) {
             int x = rand.nextInt(WINDOW_WIDTH);
             int y = rand.nextInt(WINDOW_HEIGHT);
-            characters.add(new Civil(x, y));
+            characters.add(new Civil(x, y, movementSpeed));
         }
 
         for (int i = 0; i < copRemaining; i++) {
             int x = rand.nextInt(WINDOW_WIDTH);
             int y = rand.nextInt(WINDOW_HEIGHT);
-            characters.add(new Cop(x, y));
+            characters.add(new Cop(x, y, movementSpeed));
+        }
+        for(Character character : characters) {
+            character.setMovementSpeed(movementSpeed);
         }
     }
     public Window() {
@@ -95,6 +102,26 @@ public class Window extends JFrame {
             Character.stopMovements();
             ///JOptionPane.showMessageDialog(this, "⚠ Les points ne sont pas en mouvement.");
         });
+
+        speedSlider = new JSlider(1, 20, movementSpeed);
+        speedSlider.setMajorTickSpacing(5);
+        speedSlider.setMinorTickSpacing(1);
+        speedSlider.setPaintTicks(true);
+        speedSlider.setSnapToTicks(true);
+        speedSlider.addChangeListener(e -> {
+            JSlider source = (JSlider) e.getSource();
+            if (!source.getValueIsAdjusting()) {
+                movementSpeed = source.getValue();
+                for (Character character : characters) {
+                    character.setMovementSpeed(movementSpeed);
+                }
+            }
+        });
+
+        controlPanel.add(speedSlider);
+        add(controlPanel, BorderLayout.NORTH);
+
+        setVisible(true);
 
         controlPanel.add(redLabel);
         controlPanel.add(redTextField);

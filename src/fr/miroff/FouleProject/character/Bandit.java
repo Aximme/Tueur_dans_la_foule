@@ -1,8 +1,8 @@
 package fr.miroff.FouleProject.character;
 
 public class Bandit extends Character {
-    public Bandit(int x, int y) {
-        super(x, y);
+    public Bandit(int x, int y,int movementSpeed) {
+        super(x, y,movementSpeed);
         this.health = 1;
     }
 

@@ -5,8 +5,8 @@ import java.util.Random;
 public class Civil extends Character {
     private static final Random RAND = new Random();
 
-    public Civil(int x, int y) {
-        super(x, y);
+    public Civil(int x, int y, int movementspeed) {
+        super(x, y, movementspeed);
         this.health = 1;
     }
 

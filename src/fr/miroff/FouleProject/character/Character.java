@@ -6,12 +6,14 @@ public class Character {
     private int x;
     private int y;
     private static boolean canMove = true;
+    private int movementSpeed;
 
 
 
-    public Character(int x, int y) {
+    public Character(int x, int y, int movementSpeed) {
         this.x = x;
         this.y = y;
+        this.movementSpeed=movementSpeed;
     }
 
     public int getX() {
@@ -33,19 +35,19 @@ public class Character {
         // Mouvement sur l'axe X
         if (Math.random() < 0.5) {
             if (x < 800) {
-                x += 1;
+                x += movementSpeed;
             }
         } else if (x > 0) {
-            x -= 1;
+            x -= movementSpeed;
         }
 
         // Mouvement sur l'axe Y
         if (Math.random() < 0.5) {
             if (y < 600) {
-                y += 1;
+                y +=movementSpeed;
             }
         } else if (y > 0) {
-            y -= 1;
+            y -= movementSpeed;
         }
         for (Character other : characters) {
             if (other != this) {  // Ne pas interagir avec soi-même
@@ -53,7 +55,9 @@ public class Character {
             }
         }
     }
-
+    public void setMovementSpeed(int movementSpeed) {
+        this.movementSpeed = movementSpeed;
+    }
     private boolean isColliding(Character other){
         double distance = Math.sqrt(Math.pow(this.x-other.x,2)+ Math.pow(this.y-other.y,2));
         int sumOfRadii= 10 + 10; //rayon de 10
