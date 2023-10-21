@@ -1,4 +1,6 @@
 package fr.miroff.FouleProject.character;
+import fr.miroff.FouleProject.Window;
+
 import java.util.List;
 
 public class Character {
@@ -7,14 +9,16 @@ public class Character {
     private int y;
     private static boolean canMove = true;
     private int movementSpeed;
+    Window window;
 
 
-
-    public Character(int x, int y, int movementSpeed) {
+    public Character(int x, int y, int movementSpeed, Window window) {
         this.x = x;
         this.y = y;
-        this.movementSpeed=movementSpeed;
+        this.movementSpeed = movementSpeed;
+        this.window = window;
     }
+
 
     public int getX() {
         return x;
@@ -23,16 +27,16 @@ public class Character {
     public int getY() {
         return y;
     }
+
     public static void stopMovements() {
         canMove = false;
     }
+
     public void move(List<Character> characters) {
         if (!canMove) {
             return;
         }
 
-
-        // Mouvement sur l'axe X
         if (Math.random() < 0.5) {
             if (x < 800) {
                 x += movementSpeed;
@@ -41,28 +45,31 @@ public class Character {
             x -= movementSpeed;
         }
 
-        // Mouvement sur l'axe Y
         if (Math.random() < 0.5) {
             if (y < 600) {
-                y +=movementSpeed;
+                y += movementSpeed;
             }
         } else if (y > 0) {
             y -= movementSpeed;
         }
+
         for (Character other : characters) {
-            if (other != this) {  // Ne pas interagir avec soi-même
+            if (other != this) {
                 this.interact(other);
             }
         }
     }
+
     public void setMovementSpeed(int movementSpeed) {
         this.movementSpeed = movementSpeed;
     }
-    private boolean isColliding(Character other){
-        double distance = Math.sqrt(Math.pow(this.x-other.x,2)+ Math.pow(this.y-other.y,2));
-        int sumOfRadii= 10 + 10; //rayon de 10
+
+    private boolean isColliding(Character other) {
+        double distance = Math.sqrt(Math.pow(this.x - other.x, 2) + Math.pow(this.y - other.y, 2));
+        int sumOfRadii = 10 + 10;
         return distance <= sumOfRadii;
     }
+
     public void interact(Character other) {
         if (this.isColliding(other)) {
             if (this instanceof Bandit && other instanceof Civil) {
@@ -80,13 +87,16 @@ public class Character {
 
     public boolean hurt() {
         this.health -= 1;
+        if (this.health == 0) {
+            // L'agent est mort, appeler la méthode de mise à jour des compteurs dans la classe Window
+            if (window != null) {
+                window.updateCounters(this);
+            }
+        }
         return this.health == 0;
     }
 
     public boolean isAlive() {
         return this.health > 0;
     }
-
-
 }
-

@@ -10,10 +10,6 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 
-
-//Bandits = 1 | Civils = 2 | Policier = 3
-
-//Test commit direct depuis Intellij
 public class Window extends JFrame {
     public static final int WINDOW_WIDTH = 800;
     public static final int WINDOW_HEIGHT = 650;
@@ -23,41 +19,59 @@ public class Window extends JFrame {
     public static final ArrayList<Character> characters = new ArrayList<>();
     private JPanel drawingPanel;
     private JSlider speedSlider;
-
-    private int movementSpeed=3;
-
+    private int banditCount = 0;
+    private int civilCount = 0;
+    private int copCount = 0;
+    private int movementSpeed = 1;
+    private JLabel banditCounterLabel;
+    private JLabel civilCounterLabel;
+    private JLabel copCounterLabel;
 
     private void generateCharacters() {
         Random rand = new Random();
         characters.clear();
 
+        banditCount = 0;
+        civilCount = 0;
+        copCount = 0;
+
         for (int i = 0; i < banditRemaining; i++) {
             int x = rand.nextInt(WINDOW_WIDTH);
             int y = rand.nextInt(WINDOW_HEIGHT);
-            characters.add(new Bandit(x, y,movementSpeed));
+            characters.add(new Bandit(x, y, movementSpeed, this));
+            banditCount++;
         }
 
         for (int i = 0; i < civilRemaining; i++) {
             int x = rand.nextInt(WINDOW_WIDTH);
             int y = rand.nextInt(WINDOW_HEIGHT);
-            characters.add(new Civil(x, y, movementSpeed));
+            characters.add(new Civil(x, y, movementSpeed, this));
+            civilCount++;
         }
 
         for (int i = 0; i < copRemaining; i++) {
             int x = rand.nextInt(WINDOW_WIDTH);
             int y = rand.nextInt(WINDOW_HEIGHT);
-            characters.add(new Cop(x, y, movementSpeed));
+            characters.add(new Cop(x, y, movementSpeed, this));
+            copCount++;
         }
-        for(Character character : characters) {
+
+        for (Character character : characters) {
             character.setMovementSpeed(movementSpeed);
         }
+
+        updateCounters();
     }
+
     public Window() {
         setTitle("Tueurs dans la Foule !");
         setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
+        banditCounterLabel = new JLabel("🥷 Bandits en Vie : " + banditCount);
+        civilCounterLabel = new JLabel("👤 Civils en vie : " + civilCount);
+        copCounterLabel = new JLabel("🚓 Policiers en vie : " + copCount);
 
         drawingPanel = new JPanel() {
             protected void paintComponent(Graphics g) {
@@ -73,9 +87,9 @@ public class Window extends JFrame {
         JTextField blackTextField = new JTextField(5);
         JTextField blueTextField = new JTextField(5);
 
-        JLabel redLabel = new JLabel("Bandits: ");
-        JLabel blackLabel = new JLabel("Civils: ");
-        JLabel blueLabel = new JLabel("Policiers: ");
+        JLabel redLabel = new JLabel("Bandits : ");
+        JLabel blackLabel = new JLabel("Civils : ");
+        JLabel blueLabel = new JLabel("Policiers : ");
 
         JButton generateButton = new JButton("START");
         generateButton.setBackground(Color.GREEN);
@@ -94,13 +108,11 @@ public class Window extends JFrame {
             }
         });
 
-
         JButton stopButton = new JButton("STOP");
         stopButton.setBackground(Color.RED);
         stopButton.setForeground(Color.RED);
         stopButton.addActionListener(e -> {
             Character.stopMovements();
-            ///JOptionPane.showMessageDialog(this, "⚠ Les points ne sont pas en mouvement.");
         });
 
         speedSlider = new JSlider(1, 20, movementSpeed);
@@ -134,10 +146,28 @@ public class Window extends JFrame {
         add(controlPanel, BorderLayout.NORTH);
 
         setVisible(true);
+
+        JPanel countersPanel = new JPanel();
+        countersPanel.setLayout(new BoxLayout(countersPanel, BoxLayout.LINE_AXIS));
+
+        countersPanel.add(Box.createHorizontalGlue());
+        countersPanel.add(banditCounterLabel);
+        countersPanel.add(Box.createHorizontalGlue());
+        countersPanel.add(Box.createRigidArea(new Dimension(10, 0)));
+        countersPanel.add(civilCounterLabel);
+        countersPanel.add(Box.createHorizontalGlue());
+        countersPanel.add(Box.createRigidArea(new Dimension(10, 0)));
+        countersPanel.add(copCounterLabel);
+        countersPanel.add(Box.createHorizontalGlue());
+
+        add(countersPanel, BorderLayout.SOUTH);
+        setVisible(true);
     }
 
     private void drawCircles(Graphics g) {
-        for (Character character : characters) {
+        ArrayList<Character> charactersCopy = new ArrayList<>(characters);
+
+        for (Character character : charactersCopy) {
             if (character instanceof Bandit) {
                 g.setColor(Color.RED);
             } else if (character instanceof Civil) {
@@ -157,4 +187,26 @@ public class Window extends JFrame {
         g.fillOval(x, y, size, size);
     }
 
+    public void updateCounters() {
+        banditCounterLabel.setText("🥷 Bandits en Vie : " + banditCount);
+        civilCounterLabel.setText("👤 Civils en vie : " + civilCount);
+        copCounterLabel.setText("🚓 Policiers en vie : " + copCount);
+    }
+
+    public void updateCounters(Character character) {
+        if (character instanceof Bandit) {
+            banditCount--;
+        } else if (character instanceof Civil) {
+            civilCount--;
+        } else if (character instanceof Cop) {
+            copCount--;
+        }
+        updateCounters();
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            new Window();
+        });
+    }
 }
