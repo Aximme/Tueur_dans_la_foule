@@ -95,6 +95,7 @@ public class Window extends JFrame {
         generateButton.setBackground(Color.GREEN);
         generateButton.setForeground(Color.GREEN);
         generateButton.addActionListener(e -> {
+            Character.resumeMovements();
             try {
                 banditRemaining = Integer.parseInt(redTextField.getText());
                 civilRemaining = Integer.parseInt(blackTextField.getText());
@@ -113,6 +114,9 @@ public class Window extends JFrame {
         stopButton.setForeground(Color.RED);
         stopButton.addActionListener(e -> {
             Character.stopMovements();
+
+
+
         });
 
         speedSlider = new JSlider(1, 20, movementSpeed);

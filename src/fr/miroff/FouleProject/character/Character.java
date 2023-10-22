@@ -31,6 +31,9 @@ public class Character {
     public static void stopMovements() {
         canMove = false;
     }
+    public static void resumeMovements() {
+        canMove = true;
+    }
 
     public void move(List<Character> characters) {
         if (!canMove) {
