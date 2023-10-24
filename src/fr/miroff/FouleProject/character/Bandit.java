@@ -4,7 +4,7 @@ import fr.miroff.FouleProject.Window;
 
 public class Bandit extends Character {
     public Bandit(int x, int y, int movementSpeed, Window window) {
-        super(x, y,movementSpeed, window);
+        super(x, y, movementSpeed, window);
         this.health = 1;
         this.window = window;
     }

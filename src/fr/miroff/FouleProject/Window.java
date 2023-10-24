@@ -6,13 +6,14 @@ import fr.miroff.FouleProject.character.Cop;
 import fr.miroff.FouleProject.character.Character;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 
 public class Window extends JFrame {
-    public static final int WINDOW_WIDTH = 800;
-    public static final int WINDOW_HEIGHT = 650;
+    public static final int WINDOW_WIDTH = 1000;
+    public static final int WINDOW_HEIGHT = 800;
     private int banditRemaining = 1;
     private int civilRemaining = 1;
     private int copRemaining = 1;
@@ -45,21 +46,21 @@ public class Window extends JFrame {
 
         for (int i = 0; i < banditRemaining; i++) {
             int x = rand.nextInt(WINDOW_WIDTH);
-            int y = rand.nextInt(WINDOW_HEIGHT);
+            int y = rand.nextInt(WINDOW_HEIGHT-100);
             characters.add(new Bandit(x, y, movementSpeed, this));
             banditCount++;
         }
 
         for (int i = 0; i < civilRemaining; i++) {
             int x = rand.nextInt(WINDOW_WIDTH);
-            int y = rand.nextInt(WINDOW_HEIGHT);
+            int y = rand.nextInt(WINDOW_HEIGHT-100);
             characters.add(new Civil(x, y, movementSpeed, this));
             civilCount++;
         }
 
         for (int i = 0; i < copRemaining; i++) {
             int x = rand.nextInt(WINDOW_WIDTH);
-            int y = rand.nextInt(WINDOW_HEIGHT);
+            int y = rand.nextInt(WINDOW_HEIGHT-100);
             characters.add(new Cop(x, y, movementSpeed, this));
             copCount++;
         }
@@ -97,9 +98,9 @@ public class Window extends JFrame {
         JTextField blackTextField = new JTextField(5);
         JTextField blueTextField = new JTextField(5);
 
-        JLabel redLabel = new JLabel("Bandits : ");
-        JLabel blackLabel = new JLabel("Civils : ");
-        JLabel blueLabel = new JLabel("Policiers : ");
+        JLabel redLabel = new JLabel("🥷 Bandits : ");
+        JLabel blackLabel = new JLabel("👤 Civils : ");
+        JLabel blueLabel = new JLabel("🚓 Policiers : ");
 
         JButton generateButton = new JButton("START");
         generateButton.setBackground(Color.GREEN);
@@ -277,7 +278,8 @@ class SummaryWindow extends JFrame {
         banditLabel.setText("🥷 Bandits en vie : " + banditCount);
         civilLabel.setText("👤 Civils en vie  : " + civilCount);
         copLabel.setText("🚓 Policiers en vie : " + copCount);
-        testLabel.setText("morts ------------------------");
-        deathsLabel.setText(" 🥷 Bandits:"  + banditDeaths + " 👤 Civils: " + civilDeaths + " 🚓 Policiers: " + copDeaths);
+        copLabel.setBorder(new EmptyBorder(0, 0, 10, 0)); //Permet de sauter 10px entre les 2 infos
+        testLabel.setText("--------- Recap Agents Morts ---------");
+        deathsLabel.setText(" 🥷 Bandits: "  + banditDeaths + " 👤 Civils: " + civilDeaths + " 🚓 Policiers: " + copDeaths);
     }
 }

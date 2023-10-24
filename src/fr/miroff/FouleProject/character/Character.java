@@ -41,7 +41,7 @@ public class Character {
         }
 
         if (Math.random() < 0.5) {
-            if (x < 800) {
+            if (x < Window.WINDOW_WIDTH) {
                 x += movementSpeed;
             }
         } else if (x > 0) {
@@ -49,7 +49,7 @@ public class Character {
         }
 
         if (Math.random() < 0.5) {
-            if (y < 600) {
+            if (y < Window.WINDOW_HEIGHT - 100) { //Window Height & -100 Pour affichage en mode fenêtré
                 y += movementSpeed;
             }
         } else if (y > 0) {
