@@ -11,8 +11,6 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 
-//Bandits = 1 | Civils = 2 | Policier = 3
-
 public class Window extends JFrame {
     public static final int WINDOW_WIDTH = 1000;
     public static final int WINDOW_HEIGHT = 800;
@@ -74,6 +72,53 @@ public class Window extends JFrame {
         updateCounters();
     }
 
+    private boolean noMoreBandits() {
+        return (banditCount == 0);
+    }
+
+    private boolean noMoreCivilandCops() {
+        return (civilCount==0 && copCount==0);
+    }
+
+    private boolean noMoreBanditsandCops(){
+        return (banditCount==0 && copCount==0);
+    }
+
+    private void stopSimulation() {
+        Character.stopMovements();
+        displaySimulationFinishedWindow();
+        displaySummaryWindow(); // Affichez le résumé à la fin
+
+    }
+
+    private void displaySimulationFinishedWindow() {
+        if (banditCount==0) {
+            JOptionPane.showMessageDialog(this, "Simulation terminée. Il n'y a plus de bandits en vie .");
+            summaryWindow.displaySummary(banditCount, civilCount, copCount, banditDeaths, civilDeaths, copDeaths);
+            summaryWindow.setVisible(true);
+        }
+
+        if (civilCount==0) {
+            JOptionPane.showMessageDialog(this, "Simulation terminée. Il n'y a plus de civils ni de policiers en vie.");
+            summaryWindow.displaySummary(banditCount, civilCount, copCount, banditDeaths, civilDeaths, copDeaths);
+            summaryWindow.setVisible(true);
+
+        }
+
+        if (banditCount==0 && copCount==0){
+            JOptionPane.showMessageDialog(this, "Simulation terminée. Il n'y a plus de policiers ni de bandits en vie.");
+            summaryWindow.displaySummary(banditCount, civilCount, copCount, banditDeaths, civilDeaths, copDeaths);
+            summaryWindow.setVisible(true);
+
+        }
+
+    }
+
+    private void displaySummaryWindow() {
+        summaryWindow.displaySummary(banditCount, civilCount, copCount, banditDeaths, civilDeaths, copDeaths);
+        summaryWindow.setVisible(true);
+    }
+
     public Window() {
         setTitle("Tueurs dans la Foule !");
         setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -127,7 +172,7 @@ public class Window extends JFrame {
         stopButton.setForeground(Color.RED);
         stopButton.addActionListener(e -> {
             Character.stopMovements();
-            showSummaryWindow(); // Affichez la fenêtre de résumé
+            stopSimulation(); // Arrêtez la simulation et affichez le résumé
         });
 
         speedSlider = new JSlider(1, 20, movementSpeed);
@@ -228,12 +273,13 @@ public class Window extends JFrame {
         }
         updateCounters();
 
-    }
+        if (noMoreBandits()) {
+            stopSimulation();
+        }
 
-
-    private void showSummaryWindow() {
-        summaryWindow.displaySummary(banditCount, civilCount, copCount, banditDeaths, civilDeaths, copDeaths);
-        summaryWindow.setVisible(true);
+        if(noMoreCivilandCops()){
+            stopSimulation();
+        }
     }
 
     public static void main(String[] args) {
@@ -249,7 +295,6 @@ class SummaryWindow extends JFrame {
     private JLabel copLabel;
     private JLabel deathsLabel;
     private JLabel testLabel;
-    private int banditDeaths;
 
     public SummaryWindow(Window mainFrame, int banditDeaths, int copDeaths, int civilDeaths) {
         setTitle("Résumé de la Simulation");
@@ -260,7 +305,7 @@ class SummaryWindow extends JFrame {
         banditLabel = new JLabel("🥷 Bandits : ");
         civilLabel = new JLabel("👤 Civils : ");
         copLabel = new JLabel("🚓 Policiers : ");
-        testLabel= new JLabel("Morts ------------------------");
+        testLabel = new JLabel("Morts ------------------------");
         deathsLabel = new JLabel(" 🥷 Bandits: " + banditDeaths + " 👤 Civils: " + civilDeaths + " 🚓 Policiers: " + copDeaths);
 
         JPanel summaryPanel = new JPanel();
@@ -280,8 +325,8 @@ class SummaryWindow extends JFrame {
         banditLabel.setText("🥷 Bandits en vie : " + banditCount);
         civilLabel.setText("👤 Civils en vie  : " + civilCount);
         copLabel.setText("🚓 Policiers en vie : " + copCount);
-        copLabel.setBorder(new EmptyBorder(0, 0, 10, 0)); //Permet de sauter 10px entre les 2 infos
+        copLabel.setBorder(new EmptyBorder(0, 0, 10, 0)); // Permet de sauter 10px entre les 2 infos
         testLabel.setText("--------- Recap Agents Morts ---------");
-        deathsLabel.setText(" 🥷 Bandits: "  + banditDeaths + " 👤 Civils: " + civilDeaths + " 🚓 Policiers: " + copDeaths);
+        deathsLabel.setText(" 🥷 Bandits: " + banditDeaths + " 👤 Civils: " + civilDeaths + " 🚓 Policiers: " + copDeaths);
     }
 }
