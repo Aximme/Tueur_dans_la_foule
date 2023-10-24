@@ -11,6 +11,8 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 
+//Bandits = 1 | Civils = 2 | Policier = 3
+
 public class Window extends JFrame {
     public static final int WINDOW_WIDTH = 1000;
     public static final int WINDOW_HEIGHT = 800;
