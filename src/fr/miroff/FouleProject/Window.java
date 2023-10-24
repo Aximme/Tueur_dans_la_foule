@@ -33,6 +33,7 @@ public class Window extends JFrame {
     private JLabel deathsLabel;
     private SummaryWindow summaryWindow;
 
+
     private void generateCharacters() {
         Random rand = new Random();
         characters.clear();
@@ -72,6 +73,7 @@ public class Window extends JFrame {
         updateCounters();
     }
 
+<<<<<<< HEAD
     private boolean noMoreBandits() {
         return (banditCount == 0);
     }
@@ -117,6 +119,14 @@ public class Window extends JFrame {
     private void displaySummaryWindow() {
         summaryWindow.displaySummary(banditCount, civilCount, copCount, banditDeaths, civilDeaths, copDeaths);
         summaryWindow.setVisible(true);
+=======
+    private ArrayList<Building> buildings = new ArrayList<>();
+
+    private void generateBuildings() {
+        buildings.clear();
+        buildings.add(new Building(100, 200, 50, 150));
+        buildings.add(new Building(300, 100, 80, 120));
+>>>>>>> 6fd6b619faa963db9cc74e82a2156b7bdc788380
     }
 
     public Window() {
@@ -160,6 +170,7 @@ public class Window extends JFrame {
                 copRemaining = Integer.parseInt(blueTextField.getText());
 
                 generateCharacters();
+                generateBuildings();
                 repaint();
 
             } catch (NumberFormatException ex) {
@@ -239,7 +250,11 @@ public class Window extends JFrame {
             }
             drawCircle(g, character.getX(), character.getY(), 10);
         }
+        for (Building building : buildings) {
+            building.draw(g);
+        }
     }
+
 
     public void display() {
         drawingPanel.repaint();
