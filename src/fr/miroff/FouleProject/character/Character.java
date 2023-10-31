@@ -1,4 +1,5 @@
 package fr.miroff.FouleProject.character;
+import fr.miroff.FouleProject.Building;
 import fr.miroff.FouleProject.Window;
 
 import java.util.List;
@@ -34,26 +35,50 @@ public class Character {
     public static void resumeMovements() {
         canMove = true;
     }
+    private List<Building> buildings; // Ajout de la liste des bâtiments
+
+    public void setBuildings(List<Building> buildings) {
+        this.buildings = buildings;
+    }
 
     public void move(List<Character> characters) {
         if (!canMove) {
             return;
         }
+        int nextX = x;
+        int nextY = y;
 
         if (Math.random() < 0.5) {
             if (x < Window.WINDOW_WIDTH) {
-                x += movementSpeed;
+                nextX += movementSpeed;
             }
         } else if (x > 0) {
-            x -= movementSpeed;
+            nextX -= movementSpeed;
         }
 
         if (Math.random() < 0.5) {
             if (y < Window.WINDOW_HEIGHT - 100) { //Window Height & -100 Pour affichage en mode fenêtré
-                y += movementSpeed;
+                nextY += movementSpeed;
             }
         } else if (y > 0) {
-            y -= movementSpeed;
+            nextY -= movementSpeed;
+        }
+        boolean canMoveX = true;
+        boolean canMoveY = true;
+
+        for (Building building : buildings) {
+            if (isCollidingWithBuilding(nextX, y, building)) {
+                canMoveX = false;
+            }
+            if (isCollidingWithBuilding(x, nextY, building)) {
+                canMoveY = false;
+            }
+        }
+        if (canMoveX) {
+            x = nextX;
+        }
+        if (canMoveY) {
+            y = nextY;
         }
 
         for (Character other : characters) {
@@ -61,6 +86,11 @@ public class Character {
                 this.interact(other);
             }
         }
+    }
+    private boolean isCollidingWithBuilding(int pointX, int pointY, Building building) {
+        return pointX >= building.getX() && pointX <= building.getX() + building.getWidth() &&
+                pointY >= building.getY() && pointY <= building.getY() + building.getHeight();
+
     }
 
     public void setMovementSpeed(int movementSpeed) {

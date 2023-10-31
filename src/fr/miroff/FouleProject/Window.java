@@ -68,6 +68,9 @@ public class Window extends JFrame {
         for (Character character : characters) {
             character.setMovementSpeed(movementSpeed);
         }
+        for (Character character : characters) {
+            character.setBuildings(buildings);
+        }
 
         updateCounters();
     }
@@ -77,6 +80,9 @@ public class Window extends JFrame {
         buildings.clear();
         buildings.add(new Building(100, 200, 50, 150));
         buildings.add(new Building(300, 100, 80, 120));
+        buildings.add(new Building(200, 400, 80, 120));
+
+
     }
 
     private boolean noMoreBandits() {
