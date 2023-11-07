@@ -32,6 +32,7 @@ public class Window extends JFrame {
     private JLabel copCounterLabel;
     private JLabel deathsLabel;
     private SummaryWindow summaryWindow;
+    private Image backgroundImage;
 
     private void generateCharacters() {
         Random rand = new Random();
@@ -124,6 +125,8 @@ public class Window extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
+        backgroundImage = new ImageIcon("/Users/maxime/Desktop/Université/Projet Informatique/Tueur_dans_la_foule/src/fr/miroff/FouleProject/img/DALL·E 2023-11-07 09.14.38_crop.png").getImage();
+
         banditCounterLabel = new JLabel("🥷 Bandits en Vie : " + banditCount);
         civilCounterLabel = new JLabel("👤 Civils en vie : " + civilCount);
         copCounterLabel = new JLabel("🚓 Policiers en vie : " + copCount);
@@ -133,9 +136,11 @@ public class Window extends JFrame {
         drawingPanel = new JPanel() {
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
+                g.drawImage(backgroundImage, 0, 0, this.getWidth(), this.getHeight(), this);
                 drawCircles(g);
             }
         };
+
         add(drawingPanel);
 
         JPanel controlPanel = new JPanel(new FlowLayout());
