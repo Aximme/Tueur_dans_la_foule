@@ -28,13 +28,22 @@ public class Character {
     public int getY() {
         return y;
     }
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
 
     public static void stopMovements() {
         canMove = false;
     }
+
     public static void resumeMovements() {
         canMove = true;
     }
+
     private List<Building> buildings; // Ajout de la liste des bâtiments
 
     public void setBuildings(List<Building> buildings) {
@@ -87,6 +96,7 @@ public class Character {
             }
         }
     }
+
     private boolean isCollidingWithBuilding(int pointX, int pointY, Building building) {
         return pointX >= building.getX() && pointX <= building.getX() + building.getWidth() &&
                 pointY >= building.getY() && pointY <= building.getY() + building.getHeight();
@@ -132,4 +142,64 @@ public class Character {
     public boolean isAlive() {
         return this.health > 0;
     }
+
+    public boolean attaqueIsPossible(Character other) {
+        if ((this instanceof Bandit && other instanceof Civil) || (this instanceof Cop && other instanceof Bandit)) {
+            return true;
+        } else return false;
+    }
+
+    public double distanceBetween(Character c) {
+        return Math.sqrt(Math.pow(this.x - c.getX(), 2)) + Math.pow(this.y - c.getY(), 2);
+    }
+
+    public int characterClosest() {
+        double distanceMin = distanceBetween(Window.characters.get(0));
+        int indice = -1;
+
+        for (int i = 0; i < Window.characters.size(); i++) {
+            double distance = distanceBetween(Window.characters.get(i));
+            if (distanceMin > distance) {
+                distanceMin = distance;
+                if (attaqueIsPossible(Window.characters.get(indice))) {
+                    indice = i;
+                }
+            }
+        }
+        return indice;
+    }
+
+    public boolean target() {
+        int indice = characterClosest();
+        if (indice != -1) {
+            return true;
+        } else return false;
+    }
+
+    public void pathfinding(Character x) {
+        // Calculez le vecteur de déplacement vers le personnage cible (x)
+        int targetX = x.getX();
+        int targetY = x.getY();
+        int deltaX = targetX - this.getX();
+        int deltaY = targetY - this.getY();
+
+        // Calcul de la distance euclidienne jusqu'à la cible
+        double distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+        if (distance < this.movementSpeed) {
+            // Atteint la cible, effectuez une action (par exemple, attaquez)
+            if (this.attaqueIsPossible(x)) {
+                this.interact(x);
+            }
+        } else {
+            // Déplacez-vous vers la cible en direction de deltaX et deltaY
+            int moveX = (int) (this.movementSpeed * (deltaX / distance));
+            int moveY = (int) (this.movementSpeed * (deltaY / distance));
+            this.setX(this.getX() + moveX);
+            this.setY(this.getY() + moveY);
+        }
+
+    }
+
 }
+
