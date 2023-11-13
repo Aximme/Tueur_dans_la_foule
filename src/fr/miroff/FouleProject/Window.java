@@ -45,22 +45,40 @@ public class Window extends JFrame {
         copDeaths = 0;
 
         for (int i = 0; i < banditRemaining; i++) {
-            int x = rand.nextInt(WINDOW_WIDTH);
-            int y = rand.nextInt(WINDOW_HEIGHT-100);
+            int x, y;
+            boolean isNearBuilding;
+            do {
+                x = rand.nextInt(WINDOW_WIDTH);
+                y = rand.nextInt(WINDOW_HEIGHT - 100);
+                isNearBuilding = isNearBuilding(x, y);
+            } while (isNearBuilding);
+
             characters.add(new Bandit(x, y, movementSpeed, this));
             banditCount++;
         }
 
         for (int i = 0; i < civilRemaining; i++) {
-            int x = rand.nextInt(WINDOW_WIDTH);
-            int y = rand.nextInt(WINDOW_HEIGHT-100);
+            int x, y;
+            boolean isNearBuilding;
+            do {
+                x = rand.nextInt(WINDOW_WIDTH);
+                y = rand.nextInt(WINDOW_HEIGHT - 100);
+                isNearBuilding = isNearBuilding(x, y);
+            } while (isNearBuilding);
+
             characters.add(new Civil(x, y, movementSpeed, this));
             civilCount++;
         }
 
         for (int i = 0; i < copRemaining; i++) {
-            int x = rand.nextInt(WINDOW_WIDTH);
-            int y = rand.nextInt(WINDOW_HEIGHT-100);
+            int x, y;
+            boolean isNearBuilding;
+            do {
+                x = rand.nextInt(WINDOW_WIDTH);
+                y = rand.nextInt(WINDOW_HEIGHT - 100);
+                isNearBuilding = isNearBuilding(x, y);
+            } while (isNearBuilding);
+
             characters.add(new Cop(x, y, movementSpeed, this));
             copCount++;
         }
@@ -74,6 +92,23 @@ public class Window extends JFrame {
 
         updateCounters();
     }
+
+    private boolean isNearBuilding(int x, int y) { ///boolean qui va servir à savori si le personnage créer et assez loin d'un batiment
+        int distanceThreshold = 300; // possible d'ajuster la distance
+        for (Building building : buildings) {
+            int buildingX = building.getX();
+            int buildingY = building.getY();
+            int buildingWidth = building.getWidth();
+            int buildingHeight = building.getHeight();
+
+            if (x >= buildingX - distanceThreshold && x <= buildingX + buildingWidth + distanceThreshold &&
+                    y >= buildingY - distanceThreshold && y <= buildingY + buildingHeight + distanceThreshold) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private ArrayList<Building> buildings = new ArrayList<>();
 
     private void generateBuildings() {
@@ -287,9 +322,10 @@ public class Window extends JFrame {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             new Window();
-        });
-    }
+        }
+    } 
 }
+
 
 class SummaryWindow extends JFrame {
     private JLabel banditLabel;
