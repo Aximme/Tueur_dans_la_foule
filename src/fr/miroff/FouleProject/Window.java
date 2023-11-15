@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Window extends JFrame {
-    public static final int WINDOW_WIDTH = 1000;
-    public static final int WINDOW_HEIGHT = 800;
+    public static final int WINDOW_WIDTH = 1450; //1000 et 800 default
+    public static final int WINDOW_HEIGHT = 860;
     private int banditRemaining = 1;
     private int civilRemaining = 1;
     private int copRemaining = 1;
@@ -79,11 +79,9 @@ public class Window extends JFrame {
 
     private void generateBuildings() {
         buildings.clear();
-        buildings.add(new Building(100, 200, 50, 150));
-        buildings.add(new Building(300, 100, 80, 120));
-        buildings.add(new Building(200, 400, 80, 120));
-
-
+        buildings.add(new Building(0, 150, 100, 450));
+        buildings.add(new Building(300, 0, 450, 120));
+        buildings.add(new Building(200, 1000, 100, 120));
     }
 
     private boolean noMoreBandits() {
@@ -125,7 +123,7 @@ public class Window extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        backgroundImage = new ImageIcon("/Users/maxime/Desktop/Université/Projet Informatique/Tueur_dans_la_foule/src/fr/miroff/FouleProject/img/DALL·E 2023-11-07 09.14.38_crop.png").getImage();
+        backgroundImage = new ImageIcon("/Users/maxime/Desktop/Université/Projet Informatique/Tueur_dans_la_foule/src/fr/miroff/FouleProject/img/test_background.png").getImage();
 
         banditCounterLabel = new JLabel("🥷 Bandits en Vie : " + banditCount);
         civilCounterLabel = new JLabel("👤 Civils en vie : " + civilCount);
