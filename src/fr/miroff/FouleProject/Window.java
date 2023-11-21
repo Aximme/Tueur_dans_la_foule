@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Window extends JFrame {
-    public static final int WINDOW_WIDTH = 1000;
-    public static final int WINDOW_HEIGHT = 800;
+    public static final int WINDOW_WIDTH = 1450;
+    public static final int WINDOW_HEIGHT = 860;
     private int banditRemaining = 1;
     private int civilRemaining = 1;
     private int copRemaining = 1;
@@ -32,6 +32,7 @@ public class Window extends JFrame {
     private JLabel copCounterLabel;
     private JLabel deathsLabel;
     private SummaryWindow summaryWindow;
+    private Image backgroundImage;
 
     private void generateCharacters() {
         Random rand = new Random();
@@ -45,22 +46,40 @@ public class Window extends JFrame {
         copDeaths = 0;
 
         for (int i = 0; i < banditRemaining; i++) {
-            int x = rand.nextInt(WINDOW_WIDTH);
-            int y = rand.nextInt(WINDOW_HEIGHT-100);
+            int x, y;
+            boolean isNearBuilding;
+            do {
+                x = rand.nextInt(WINDOW_WIDTH);
+                y = rand.nextInt(WINDOW_HEIGHT - 100);
+                isNearBuilding = isNearBuilding(x, y);
+            } while (isNearBuilding);
+
             characters.add(new Bandit(x, y, movementSpeed, this));
             banditCount++;
         }
 
         for (int i = 0; i < civilRemaining; i++) {
-            int x = rand.nextInt(WINDOW_WIDTH);
-            int y = rand.nextInt(WINDOW_HEIGHT-100);
+            int x, y;
+            boolean isNearBuilding;
+            do {
+                x = rand.nextInt(WINDOW_WIDTH);
+                y = rand.nextInt(WINDOW_HEIGHT - 100);
+                isNearBuilding = isNearBuilding(x, y);
+            } while (isNearBuilding);
+
             characters.add(new Civil(x, y, movementSpeed, this));
             civilCount++;
         }
 
         for (int i = 0; i < copRemaining; i++) {
-            int x = rand.nextInt(WINDOW_WIDTH);
-            int y = rand.nextInt(WINDOW_HEIGHT-100);
+            int x, y;
+            boolean isNearBuilding;
+            do {
+                x = rand.nextInt(WINDOW_WIDTH);
+                y = rand.nextInt(WINDOW_HEIGHT - 100);
+                isNearBuilding = isNearBuilding(x, y);
+            } while (isNearBuilding);
+
             characters.add(new Cop(x, y, movementSpeed, this));
             copCount++;
         }
@@ -74,13 +93,30 @@ public class Window extends JFrame {
 
         updateCounters();
     }
+
+    private boolean isNearBuilding(int x, int y) { ///boolean qui va servir à savori si le personnage créer et assez loin d'un batiment
+        int distanceThreshold = 20; // possible d'ajuster la distance
+        for (Building building : buildings) {
+            int buildingX = building.getX();
+            int buildingY = building.getY();
+            int buildingWidth = building.getWidth();
+            int buildingHeight = building.getHeight();
+
+            if (x >= buildingX - distanceThreshold && x <= buildingX + buildingWidth + distanceThreshold &&
+                    y >= buildingY - distanceThreshold && y <= buildingY + buildingHeight + distanceThreshold) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private ArrayList<Building> buildings = new ArrayList<>();
 
     private void generateBuildings() {
         buildings.clear();
-        buildings.add(new Building(100, 200, 50, 150));
-        buildings.add(new Building(300, 100, 80, 120));
-        buildings.add(new Building(200, 400, 80, 120));
+        buildings.add(new Building(0, 150, 100, 450));
+        buildings.add(new Building(300, 0, 450, 120));
+        buildings.add(new Building(200, 1000, 100, 120));
 
 
     }
@@ -124,6 +160,8 @@ public class Window extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
+        backgroundImage = new ImageIcon("/Users/maxime/Desktop/Université/Projet Informatique/Tueur_dans_la_foule/src/fr/miroff/FouleProject/img/DALL·E 2023-11-07 09.14.38_crop.png").getImage();
+
         banditCounterLabel = new JLabel("🥷 Bandits en Vie : " + banditCount);
         civilCounterLabel = new JLabel("👤 Civils en vie : " + civilCount);
         copCounterLabel = new JLabel("🚓 Policiers en vie : " + copCount);
@@ -133,9 +171,11 @@ public class Window extends JFrame {
         drawingPanel = new JPanel() {
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
+                g.drawImage(backgroundImage, 0, 0, this.getWidth(), this.getHeight(), this);
                 drawCircles(g);
             }
         };
+
         add(drawingPanel);
 
         JPanel controlPanel = new JPanel(new FlowLayout());
@@ -158,8 +198,9 @@ public class Window extends JFrame {
                 civilRemaining = Integer.parseInt(blackTextField.getText());
                 copRemaining = Integer.parseInt(blueTextField.getText());
 
-                generateCharacters();
+
                 generateBuildings();
+                generateCharacters();
                 repaint();
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(this, "⚠ Entrée incorrecte.");
@@ -283,53 +324,53 @@ public class Window extends JFrame {
     }
 
 
-
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             new Window();
         });
     }
-}
 
-class SummaryWindow extends JFrame {
-    private JLabel banditLabel;
-    private JLabel civilLabel;
-    private JLabel copLabel;
-    private JLabel deathsLabel;
-    private JLabel testLabel;
-    private int banditDeaths;
 
-    public SummaryWindow(Window mainFrame, int banditDeaths, int copDeaths, int civilDeaths) {
-        setTitle("Résumé de la Simulation");
-        setSize(300, 150);
-        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        setLocationRelativeTo(mainFrame);
+    class SummaryWindow extends JFrame {
+        private JLabel banditLabel;
+        private JLabel civilLabel;
+        private JLabel copLabel;
+        private JLabel deathsLabel;
+        private JLabel testLabel;
+        private int banditDeaths;
 
-        banditLabel = new JLabel("🥷 Bandits : ");
-        civilLabel = new JLabel("👤 Civils : ");
-        copLabel = new JLabel("🚓 Policiers : ");
-        testLabel = new JLabel("Morts ------------------------");
-        deathsLabel = new JLabel(" 🥷 Bandits: " + banditDeaths + " 👤 Civils: " + civilDeaths + " 🚓 Policiers: " + copDeaths);
+        public SummaryWindow(Window mainFrame, int banditDeaths, int copDeaths, int civilDeaths) {
+            setTitle("Résumé de la Simulation");
+            setSize(300, 150);
+            setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+            setLocationRelativeTo(mainFrame);
 
-        JPanel summaryPanel = new JPanel();
-        summaryPanel.setLayout(new BoxLayout(summaryPanel, BoxLayout.PAGE_AXIS));
-        summaryPanel.add(banditLabel);
-        summaryPanel.add(civilLabel);
-        summaryPanel.add(copLabel);
-        summaryPanel.add(testLabel);
-        summaryPanel.add(deathsLabel);
+            banditLabel = new JLabel("🥷 Bandits : ");
+            civilLabel = new JLabel("👤 Civils : ");
+            copLabel = new JLabel("🚓 Policiers : ");
+            testLabel = new JLabel("Morts ------------------------");
+            deathsLabel = new JLabel(" 🥷 Bandits: " + banditDeaths + " 👤 Civils: " + civilDeaths + " 🚓 Policiers: " + copDeaths);
 
-        add(summaryPanel, BorderLayout.CENTER);
+            JPanel summaryPanel = new JPanel();
+            summaryPanel.setLayout(new BoxLayout(summaryPanel, BoxLayout.PAGE_AXIS));
+            summaryPanel.add(banditLabel);
+            summaryPanel.add(civilLabel);
+            summaryPanel.add(copLabel);
+            summaryPanel.add(testLabel);
+            summaryPanel.add(deathsLabel);
 
-        setVisible(false);
-    }
+            add(summaryPanel, BorderLayout.CENTER);
 
-    public void displaySummary(int banditCount, int civilCount, int copCount, int banditDeaths, int civilDeaths, int copDeaths) {
-        banditLabel.setText("🥷 Bandits en vie : " + banditCount);
-        civilLabel.setText("👤 Civils en vie  : " + civilCount);
-        copLabel.setText("🚓 Policiers en vie : " + copCount);
-        copLabel.setBorder(new EmptyBorder(0, 0, 10, 0));
-        testLabel.setText("--------- Recap Agents Morts ---------");
-        deathsLabel.setText(" 🥷 Bandits: " + banditDeaths + " 👤 Civils: " + civilDeaths + " 🚓 Policiers: " + copDeaths);
+            setVisible(false);
+        }
+
+        public void displaySummary(int banditCount, int civilCount, int copCount, int banditDeaths, int civilDeaths, int copDeaths) {
+            banditLabel.setText("🥷 Bandits en vie : " + banditCount);
+            civilLabel.setText("👤 Civils en vie  : " + civilCount);
+            copLabel.setText("🚓 Policiers en vie : " + copCount);
+            copLabel.setBorder(new EmptyBorder(0, 0, 10, 0));
+            testLabel.setText("--------- Recap Agents Morts ---------");
+            deathsLabel.setText(" 🥷 Bandits: " + banditDeaths + " 👤 Civils: " + civilDeaths + " 🚓 Policiers: " + copDeaths);
+        }
     }
 }

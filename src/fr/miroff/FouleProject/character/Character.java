@@ -105,8 +105,8 @@ public class Character {
     }
 
     private boolean isCollidingWithBuilding(int pointX, int pointY, Building building) {
-        return pointX >= building.getX() && pointX <= building.getX() + building.getWidth() &&
-                pointY >= building.getY() && pointY <= building.getY() + building.getHeight();
+        return pointX >= building.getX()-20 && pointX <= building.getX() + building.getWidth()+20 &&
+                pointY >= building.getY()-20 && pointY <= building.getY() + building.getHeight()+20;
 
     }
 
