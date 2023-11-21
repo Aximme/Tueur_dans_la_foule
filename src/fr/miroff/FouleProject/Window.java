@@ -33,6 +33,7 @@ public class Window extends JFrame {
     private JLabel deathsLabel;
     private SummaryWindow summaryWindow;
     private Image backgroundImage;
+    private Building circularBuilding;
 
     private void generateCharacters() {
         Random rand = new Random();
@@ -116,9 +117,10 @@ public class Window extends JFrame {
         buildings.clear();
         buildings.add(new Building(0, 150, 100, 450));
         buildings.add(new Building(300, 0, 450, 120));
-        buildings.add(new Building(200, 1000, 100, 120));
-
-
+    }
+    private void generateCircularBuildings() {
+        circularBuilding = new Building(726,385,85);
+        buildings.add(circularBuilding);
     }
 
     private boolean noMoreBandits() {
@@ -128,8 +130,6 @@ public class Window extends JFrame {
     private boolean noMoreCivilandCops() {
         return (civilCount == 0 && copCount == 0);
     }
-
-    private boolean noMorecivil(){ return (civilCount==0);}
 
     private void stopSimulation() {
         Character.stopMovements();
@@ -143,7 +143,7 @@ public class Window extends JFrame {
         }
 
         if (civilCount == 0) {
-            JOptionPane.showMessageDialog(this, "Simulation terminée. Il n'y a plus de civils en vie.");
+            JOptionPane.showMessageDialog(this, "Simulation terminée. Il n'y a plus de civils ni de policiers en vie.");
         }
 
         if (banditCount == 0 && copCount == 0) {
@@ -202,6 +202,7 @@ public class Window extends JFrame {
 
 
                 generateBuildings();
+                generateCircularBuildings();
                 generateCharacters();
                 repaint();
             } catch (NumberFormatException ex) {
@@ -321,9 +322,6 @@ public class Window extends JFrame {
         }
 
         if (noMoreCivilandCops()) {
-            stopSimulation();
-        }
-        if (noMorecivil()){
             stopSimulation();
         }
     }

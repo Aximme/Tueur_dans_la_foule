@@ -7,18 +7,36 @@ public class Building {
     private int y;
     private int width;
     private int height;
+    private boolean isCircular;
+    private int radius;
 
+    //Constructeur rectangle noir/texture
     public Building(int x, int y, int width, int height) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
+        this.isCircular = false;
+    }
+
+    //Constructeur bâtiment circulaire transparent (gérer les collisions avec la fontaine)
+    public Building(int x, int y, int radius) {
+        this.x = x;
+        this.y = y;
+        this.radius = radius;
+        this.isCircular = true;
     }
 
     public void draw(Graphics g) {
-        g.setColor(Color.BLACK);
-        g.fillRect(x, y, width, height);
+        if (isCircular) {
+            g.setColor(Color.RED);//Couleur rouge pour visualiser, sera transparent dans le futur
+            g.fillOval(x - radius, y - radius, 2 * radius, 2 * radius);
+        } else {
+            g.setColor(Color.BLACK);
+            g.fillRect(x, y, width, height);
+        }
     }
+
     public int getX() {
         return x;
     }
@@ -34,6 +52,4 @@ public class Building {
     public int getHeight() {
         return height;
     }
-
-
 }
