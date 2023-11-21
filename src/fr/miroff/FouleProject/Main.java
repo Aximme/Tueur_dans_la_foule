@@ -10,6 +10,7 @@ public class Main {
     private static Window mainWindow;
 
     public static void main(String[] args) {
+
         SwingUtilities.invokeLater(() -> mainWindow = new Window());
 
         try(final ExecutorService executor = Executors.newFixedThreadPool(10)){

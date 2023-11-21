@@ -4,6 +4,7 @@ import fr.miroff.FouleProject.character.Bandit;
 import fr.miroff.FouleProject.character.Civil;
 import fr.miroff.FouleProject.character.Cop;
 import fr.miroff.FouleProject.character.Character;
+import org.w3c.dom.ls.LSOutput;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -121,7 +122,9 @@ public class Window extends JFrame {
     private void generateCircularBuildings() {
         circularBuilding = new Building(726,385,85);
         buildings.add(circularBuilding);
+        
     }
+
 
     private boolean noMoreBandits() {
         return (banditCount == 0);
@@ -130,6 +133,7 @@ public class Window extends JFrame {
     private boolean noMoreCivilandCops() {
         return (civilCount == 0 && copCount == 0);
     }
+    private boolean noMoreCivils(){return (civilCount==0);}
 
     private void stopSimulation() {
         Character.stopMovements();
@@ -143,7 +147,7 @@ public class Window extends JFrame {
         }
 
         if (civilCount == 0) {
-            JOptionPane.showMessageDialog(this, "Simulation terminée. Il n'y a plus de civils ni de policiers en vie.");
+            JOptionPane.showMessageDialog(this, "Simulation terminée. Il n'y a plus de civils en vie.");
         }
 
         if (banditCount == 0 && copCount == 0) {
@@ -322,6 +326,9 @@ public class Window extends JFrame {
         }
 
         if (noMoreCivilandCops()) {
+            stopSimulation();
+        }
+        if (noMoreCivils()){
             stopSimulation();
         }
     }
