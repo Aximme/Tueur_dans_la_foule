@@ -11,6 +11,7 @@ public class Character {
     private static boolean canMove = true;
     private int movementSpeed;
     Window window;
+    private static final int vision = 500 ;
 
 
     public Character(int x, int y, int movementSpeed, Window window) {
@@ -28,6 +29,7 @@ public class Character {
     public int getY() {
         return y;
     }
+
     public void setX(int x) {
         this.x = x;
     }
@@ -54,45 +56,50 @@ public class Character {
         if (!canMove) {
             return;
         }
-        int nextX = x;
-        int nextY = y;
+        if (target()) {
+            pathfinding();
+        }
+        else {
+            int nextX = x;
+            int nextY = y;
 
-        if (Math.random() < 0.5) {
-            if (x < Window.WINDOW_WIDTH) {
-                nextX += movementSpeed;
+            if (Math.random() < 0.5) {
+                if (x < Window.WINDOW_WIDTH) {
+                    nextX += movementSpeed;
+                }
+            } else if (x > 0) {
+                nextX -= movementSpeed;
             }
-        } else if (x > 0) {
-            nextX -= movementSpeed;
-        }
 
-        if (Math.random() < 0.5) {
-            if (y < Window.WINDOW_HEIGHT - 100) { //Window Height & -100 Pour affichage en mode fenêtré
-                nextY += movementSpeed;
+            if (Math.random() < 0.5) {
+                if (y < Window.WINDOW_HEIGHT - 100) { //Window Height & -100 Pour affichage en mode fenêtre
+                    nextY += movementSpeed;
+                }
+            } else if (y > 0) {
+                nextY -= movementSpeed;
             }
-        } else if (y > 0) {
-            nextY -= movementSpeed;
-        }
-        boolean canMoveX = true;
-        boolean canMoveY = true;
+            boolean canMoveX = true;
+            boolean canMoveY = true;
 
-        for (Building building : buildings) {
-            if (isCollidingWithBuilding(nextX, y, building)) {
-                canMoveX = false;
+            for (Building building : buildings) {
+                if (isCollidingWithBuilding(nextX, y, building)) {
+                    canMoveX = false;
+                }
+                if (isCollidingWithBuilding(x, nextY, building)) {
+                    canMoveY = false;
+                }
             }
-            if (isCollidingWithBuilding(x, nextY, building)) {
-                canMoveY = false;
+            if (canMoveX) {
+                x = nextX;
             }
-        }
-        if (canMoveX) {
-            x = nextX;
-        }
-        if (canMoveY) {
-            y = nextY;
-        }
+            if (canMoveY) {
+                y = nextY;
+            }
 
-        for (Character other : characters) {
-            if (other != this) {
-                this.interact(other);
+            for (Character other : characters) {
+                if (other != this) {
+                    this.interact(other);
+                }
             }
         }
     }
@@ -143,25 +150,24 @@ public class Character {
         return this.health > 0;
     }
 
-    public boolean attaqueIsPossible(Character other) {
-        if ((this instanceof Bandit && other instanceof Civil) || (this instanceof Cop && other instanceof Bandit)) {
-            return true;
-        } else return false;
+
+    public boolean attackIsPossible(Character other) {
+        return (this instanceof Bandit && other instanceof Civil) || (this instanceof Cop && other instanceof Bandit);
     }
 
     public double distanceBetween(Character c) {
-        return Math.sqrt(Math.pow(this.x - c.getX(), 2)) + Math.pow(this.y - c.getY(), 2);
+        return Math.sqrt(Math.pow(this.x - c.getX(), 2) + Math.pow(this.y - c.getY(), 2));
     }
 
     public int characterClosest() {
-        double distanceMin = distanceBetween(Window.characters.get(0));
+        double distanceMin = vision;
         int indice = -1;
 
         for (int i = 0; i < Window.characters.size(); i++) {
-            double distance = distanceBetween(Window.characters.get(i));
-            if (distanceMin > distance) {
-                distanceMin = distance;
-                if (attaqueIsPossible(Window.characters.get(indice))) {
+            if (attackIsPossible(Window.characters.get(i))) {
+                double distance = distanceBetween(Window.characters.get(i));
+                if (distanceMin > distance) {
+                    distanceMin = distance;
                     indice = i;
                 }
             }
@@ -171,35 +177,54 @@ public class Character {
 
     public boolean target() {
         int indice = characterClosest();
+
         if (indice != -1) {
-            return true;
+            double distance = distanceBetween(Window.characters.get(indice));
+            return distance < vision;
         } else return false;
     }
 
-    public void pathfinding(Character x) {
-        // Calculez le vecteur de déplacement vers le personnage cible (x)
-        int targetX = x.getX();
-        int targetY = x.getY();
-        int deltaX = targetX - this.getX();
-        int deltaY = targetY - this.getY();
 
-        // Calcul de la distance euclidienne jusqu'à la cible
-        double distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+    public void pathfinding() {
+        if (target()) {
+            // Cible la personne la plus proche
+            int indice = characterClosest();
+            Character c = Window.characters.get(indice);
 
-        if (distance < this.movementSpeed) {
-            // Atteint la cible, effectuez une action (par exemple, attaquez)
-            if (this.attaqueIsPossible(x)) {
-                this.interact(x);
+            // Calcule les vecteurs de distance
+            int distanceX = c.getX() - this.getX();
+            int distanceY = c.getY() - this.getY();
+
+            //Se déplace
+            if (distanceX > 0) {
+                if (x < (Window.WINDOW_WIDTH + movementSpeed)) {
+                    x += movementSpeed;
+                }
             }
-        } else {
-            // Déplacez-vous vers la cible en direction de deltaX et deltaY
-            int moveX = (int) (this.movementSpeed * (deltaX / distance));
-            int moveY = (int) (this.movementSpeed * (deltaY / distance));
-            this.setX(this.getX() + moveX);
-            this.setY(this.getY() + moveY);
+            else if (distanceX < 0) {
+                if (x > (Window.WINDOW_WIDTH - movementSpeed)) {
+                    {
+                        x -= movementSpeed;
+                    }
+                }
+            }
+
+            if (distanceY > 0){
+                if (y < (Window.WINDOW_HEIGHT - 100 + movementSpeed)) { //Window Height & -100 Pour affichage en mode fenêtre
+                    y += movementSpeed;
+                }
+            }
+            else if (distanceY < 0) {
+                if (y > (Window.WINDOW_HEIGHT - 100- movementSpeed)) { //Window Height & -100 Pour affichage en mode fenêtre
+                    y -= movementSpeed;
+                }
+            }
+
+            for (int i = 0; i < Window.characters.size(); i++) {
+                if (Window.characters.get(i) != this) {
+                    this.interact(Window.characters.get(i));
+                }
+            }
         }
-
     }
-
 }
-
