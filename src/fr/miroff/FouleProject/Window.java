@@ -160,7 +160,7 @@ public class Window extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        backgroundImage = new ImageIcon("/Users/maxime/Desktop/Université/Projet Informatique/Tueur_dans_la_foule/src/fr/miroff/FouleProject/img/DALL·E 2023-11-07 09.14.38_crop.png").getImage();
+        backgroundImage = new ImageIcon("src/fr/miroff/FouleProject/img/2d.jpg").getImage();
 
         banditCounterLabel = new JLabel("🥷 Bandits en Vie : " + banditCount);
         civilCounterLabel = new JLabel("👤 Civils en vie : " + civilCount);

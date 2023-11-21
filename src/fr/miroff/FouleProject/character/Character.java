@@ -38,6 +38,8 @@ public class Character {
         this.y = y;
     }
 
+
+
     public static void stopMovements() {
         canMove = false;
     }
@@ -46,11 +48,7 @@ public class Character {
         canMove = true;
     }
 
-    private List<Building> buildings; // Ajout de la liste des bâtiments
 
-    public void setBuildings(List<Building> buildings) {
-        this.buildings = buildings;
-    }
 
     public void move(List<Character> characters) {
         if (!canMove) {
@@ -104,15 +102,25 @@ public class Character {
         }
     }
 
+    public void setMovementSpeed(int movementSpeed) {
+        this.movementSpeed = movementSpeed;
+    }
+
+
+
+    private List<Building> buildings; // Ajout de la liste des bâtiments
+
+    public void setBuildings(List<Building> buildings) {
+        this.buildings = buildings;
+    }
+
     private boolean isCollidingWithBuilding(int pointX, int pointY, Building building) {
         return pointX >= building.getX()-20 && pointX <= building.getX() + building.getWidth()+20 &&
                 pointY >= building.getY()-20 && pointY <= building.getY() + building.getHeight()+20;
 
     }
 
-    public void setMovementSpeed(int movementSpeed) {
-        this.movementSpeed = movementSpeed;
-    }
+
 
     private boolean isColliding(Character other) {
         double distance = Math.sqrt(Math.pow(this.x - other.x, 2) + Math.pow(this.y - other.y, 2));
@@ -149,6 +157,7 @@ public class Character {
     public boolean isAlive() {
         return this.health > 0;
     }
+
 
 
     public boolean attackIsPossible(Character other) {
@@ -202,11 +211,9 @@ public class Character {
                 }
             }
             else if (distanceX < 0) {
-                if (x > (Window.WINDOW_WIDTH - movementSpeed)) {
-                    {
-                        x -= movementSpeed;
-                    }
-                }
+                //if (x > (Window.WINDOW_WIDTH - movementSpeed)) {
+                    x -= movementSpeed;
+              //  }
             }
 
             if (distanceY > 0){
@@ -215,9 +222,9 @@ public class Character {
                 }
             }
             else if (distanceY < 0) {
-                if (y > (Window.WINDOW_HEIGHT - 100- movementSpeed)) { //Window Height & -100 Pour affichage en mode fenêtre
+              //  if (y > (Window.WINDOW_HEIGHT - 100- movementSpeed)) { //Window Height & -100 Pour affichage en mode fenêtre
                     y -= movementSpeed;
-                }
+             //   }
             }
 
             for (int i = 0; i < Window.characters.size(); i++) {
