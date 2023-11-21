@@ -224,7 +224,7 @@ public class Character {
             else if (distanceY < 0) {
               //  if (y > (Window.WINDOW_HEIGHT - 100- movementSpeed)) { //Window Height & -100 Pour affichage en mode fenêtre
                     y -= movementSpeed;
-             //   }
+               // }
             }
 
             for (int i = 0; i < Window.characters.size(); i++) {
