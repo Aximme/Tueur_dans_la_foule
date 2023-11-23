@@ -36,6 +36,8 @@ public class Window extends JFrame {
     private Image backgroundImage;
     private Building circularBuilding;
 
+
+
     private void generateCharacters() {
         Random rand = new Random();
         characters.clear();
@@ -116,8 +118,8 @@ public class Window extends JFrame {
 
     private void generateBuildings() {
         buildings.clear();
-        buildings.add(new Building(0, 150, 100, 450));
-        buildings.add(new Building(300, 0, 450, 120));
+       // buildings.add(new Building(0, 150, 100, 450));  // je le mets en commentaires juste pour test convergence des civils
+      //  buildings.add(new Building(300, 0, 450, 120));
     }
     private void generateCircularBuildings() {
         circularBuilding = new Building(726,385,85);
@@ -332,6 +334,7 @@ public class Window extends JFrame {
             stopSimulation();
         }
     }
+
 
 
     public static void main(String[] args) {

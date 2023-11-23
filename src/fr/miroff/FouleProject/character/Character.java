@@ -8,10 +8,10 @@ public class Character {
     protected int health;
     private int x;
     private int y;
-    private static boolean canMove = true;
-    private int movementSpeed;
+    static boolean canMove = true;
+    int movementSpeed;
     Window window;
-    private static final int vision = 500 ;
+    private static final int vision = 1000 ;
 
 
     public Character(int x, int y, int movementSpeed, Window window) {
@@ -161,7 +161,7 @@ public class Character {
 
 
     public boolean attackIsPossible(Character other) {
-        return (this instanceof Bandit && other instanceof Civil) || (this instanceof Cop && other instanceof Bandit);
+        return (this instanceof Bandit && other instanceof Civil) || (this instanceof Cop && other instanceof Bandit) || (this instanceof Bandit && other instanceof Cop);
     }
 
     public double distanceBetween(Character c) {
@@ -192,6 +192,7 @@ public class Character {
             return distance < vision;
         } else return false;
     }
+
 
 
     public void pathfinding() {
