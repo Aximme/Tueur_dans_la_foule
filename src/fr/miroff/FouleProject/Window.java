@@ -11,6 +11,8 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 
 public class Window extends JFrame {
     public static final int WINDOW_WIDTH = 1450;
@@ -18,7 +20,7 @@ public class Window extends JFrame {
     private int banditRemaining = 1;
     private int civilRemaining = 1;
     private int copRemaining = 1;
-    public static final ArrayList<Character> characters = new ArrayList<>();
+    public static final CopyOnWriteArrayList<Character> characters = new CopyOnWriteArrayList<>();
     private JPanel drawingPanel;
     private JSlider speedSlider;
     private int banditCount = 0;
@@ -138,6 +140,11 @@ public class Window extends JFrame {
     private boolean noMoreCivils(){return (civilCount==0);}
 
     private void stopSimulation() {
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) { //TODO: Find another fix to delete point after ending simulation.
+            e.printStackTrace();
+        }
         Character.stopMovements();
         displaySimulationFinishedWindow();
         displaySummaryWindow();
