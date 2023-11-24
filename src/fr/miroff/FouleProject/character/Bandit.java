@@ -7,6 +7,7 @@ public class Bandit extends Character {
         super(x, y, movementSpeed, window);
         this.health = 1;
         this.window = window;
+        this.speed = chooseRandomSpeed();
     }
 
 

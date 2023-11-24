@@ -3,6 +3,8 @@ import fr.miroff.FouleProject.Building;
 import fr.miroff.FouleProject.Window;
 
 import java.util.List;
+import java.util.Arrays;
+import java.util.Random;
 
 public class Character {
     protected int health;
@@ -12,6 +14,9 @@ public class Character {
     int movementSpeed;
     Window window;
     private static final int vision = 1000 ;
+    protected static final List<Integer> BASE_SPEEDS = Arrays.asList(1, 2, 3);
+    protected static final Random RAND = new Random();
+    protected int speed;
 
 
     public Character(int x, int y, int movementSpeed, Window window) {
@@ -19,8 +24,11 @@ public class Character {
         this.y = y;
         this.movementSpeed = movementSpeed;
         this.window = window;
+        this.speed = chooseRandomSpeed();
     }
-
+    protected int chooseRandomSpeed() {
+        return BASE_SPEEDS.get(RAND.nextInt(BASE_SPEEDS.size()));
+    }
 
     public int getX() {
         return x;
@@ -63,18 +71,18 @@ public class Character {
 
             if (Math.random() < 0.5) {
                 if (x < Window.WINDOW_WIDTH) {
-                    nextX += movementSpeed;
+                    nextX += speed;
                 }
             } else if (x > 0) {
-                nextX -= movementSpeed;
+                nextX -= speed;
             }
 
             if (Math.random() < 0.5) {
                 if (y < Window.WINDOW_HEIGHT - 100) { //Window Height & -100 Pour affichage en mode fenêtre
-                    nextY += movementSpeed;
+                    nextY += speed;
                 }
             } else if (y > 0) {
-                nextY -= movementSpeed;
+                nextY -= speed;
             }
             boolean canMoveX = true;
             boolean canMoveY = true;
@@ -208,23 +216,23 @@ public class Character {
             //Se déplace
             if (distanceX > 0) {
                 if (x < (Window.WINDOW_WIDTH + movementSpeed)) {
-                    x += movementSpeed;
+                    x += speed;
                 }
             }
             else if (distanceX < 0) {
                 //if (x > (Window.WINDOW_WIDTH - movementSpeed)) {
-                    x -= movementSpeed;
+                    x -= speed;
               //  }
             }
 
             if (distanceY > 0){
                 if (y < (Window.WINDOW_HEIGHT - 100 + movementSpeed)) { //Window Height & -100 Pour affichage en mode fenêtre
-                    y += movementSpeed;
+                    y += speed;
                 }
             }
             else if (distanceY < 0) {
               //  if (y > (Window.WINDOW_HEIGHT - 100- movementSpeed)) { //Window Height & -100 Pour affichage en mode fenêtre
-                    y -= movementSpeed;
+                    y -= speed;
                // }
             }
 

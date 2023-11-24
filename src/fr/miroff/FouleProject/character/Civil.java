@@ -13,6 +13,7 @@ public class Civil extends Character {
         super(x, y, movementspeed, window);
         this.health = 1;
         this.window = window;
+        this.speed = chooseRandomSpeed();
     }
 
     public boolean escape() {
