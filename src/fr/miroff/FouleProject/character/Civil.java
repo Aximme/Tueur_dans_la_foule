@@ -59,6 +59,11 @@ public class Civil extends Character {
         }
 
         moveTowardsPoint(nearestTarget.getX(), nearestTarget.getY());
+
+        if (this.getX() == nearestTarget.getX() && this.getY() == nearestTarget.getY()) {
+            window.removeCivil(this);
+
+        }
     }
 
     private int calculateDistance(int targetX, int targetY) {
