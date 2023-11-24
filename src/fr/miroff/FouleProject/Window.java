@@ -183,7 +183,7 @@ public class Window extends JFrame {
         banditCounterLabel = new JLabel("🥷 Bandits en Vie : " + banditCount);
         civilCounterLabel = new JLabel("👤 Civils en vie : " + civilCount);
         copCounterLabel = new JLabel("🚓 Policiers en vie : " + copCount);
-        escapedCounterLabel = new JLabel("Nombre d'échappés : " + escapedCount);
+        escapedCounterLabel = new JLabel(" 🫥 Nombre d'échappés : " + escapedCount);
 
         deathsLabel = new JLabel("Morts - 🥷 Bandits: " + banditDeaths + " 👤 Civils: " + civilDeaths + " 🚓 Policiers: " + copDeaths );
 
@@ -321,25 +321,21 @@ public class Window extends JFrame {
         civilCounterLabel.setText("👤 Civils en vie : " + civilCount);
         copCounterLabel.setText("🚓 Policiers en vie : " + copCount);
         escapedCounterLabel.setText("Nombre d'échappés : " + escapedCount);
-        deathsLabel.setText("Morts - 🥷 Bandits: " + banditDeaths + " 👤 Civils: " + civilDeaths + " 🚓 Policiers: " + copDeaths+ "échappées"+ escapedCount);
+        deathsLabel.setText("Morts - 🥷 Bandits: " + banditDeaths + " 👤 Civils: " + civilDeaths + " 🚓 Policiers: " + copDeaths+ "🫥 Civils échappés"+ escapedCount);
     }
 
     public void updateCounters(Character character) {
         if (character instanceof Bandit) {
             banditCount--;
-        } else if (character instanceof Civil) {
-            civilCount--;
-        } else if (character instanceof Cop) {
-            copCount--;
-        }
-        if (character instanceof Bandit) {
             banditDeaths++;
         } else if (character instanceof Civil) {
+            civilCount--;
             civilDeaths++;
         } else if (character instanceof Cop) {
+            copCount--;
             copDeaths++;
-
         }
+
 
         updateCounters();
 
@@ -357,6 +353,7 @@ public class Window extends JFrame {
     public void removeCivil(Civil civil) {     //TODO: Mettre à jour le compteur en live sur l"interface graphique.
         characters.remove(civil);
         escapedCount++;
+        updateCounters();
 
 
 
@@ -379,6 +376,8 @@ public class Window extends JFrame {
         private JLabel copLabel;
         private JLabel deathsLabel;
 
+        private JLabel escapedCounterLabel;
+
         private JLabel testLabel;
 
 
@@ -391,7 +390,7 @@ public class Window extends JFrame {
             banditLabel = new JLabel("🥷 Bandits : ");
             civilLabel = new JLabel("👤 Civils : ");
             copLabel = new JLabel("🚓 Policiers : ");
-            escapedCounterLabel= new JLabel(" 😶‍🌫️ nombre échappées :");
+            escapedCounterLabel= new JLabel(" 🫥 nombre échappées :");
             testLabel = new JLabel("Morts ------------------------");
             deathsLabel = new JLabel(" 🥷 Bandits: " + banditDeaths + " 👤 Civils: " + civilDeaths + " 🚓 Policiers: " + copDeaths);
 
@@ -415,7 +414,7 @@ public class Window extends JFrame {
             banditLabel.setText("🥷 Bandits en vie : " + banditCount);
             civilLabel.setText("👤 Civils en vie  : " + civilCount);
             copLabel.setText("🚓 Policiers en vie : " + copCount);
-            escapedCounterLabel.setText("‍😶‍🌫️échappées : " + escapedCount);
+            escapedCounterLabel.setText("🫥 Civils échapés : " + escapedCount);
             copLabel.setBorder(new EmptyBorder(0, 0, 10, 0));
             testLabel.setText("--------- Recap Agents Morts ---------");
             deathsLabel.setText(" 🥷 Bandits: " + banditDeaths + " 👤 Civils: " + civilDeaths + " 🚓 Policiers: " + copDeaths);
