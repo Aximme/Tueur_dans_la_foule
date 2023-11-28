@@ -29,23 +29,21 @@ public class Main {
 
                 for (Character character : Window.characters) {
                     executor.submit(() -> {
-                        if (character instanceof Civil) {
-                            Civil civil = (Civil) character;
-                            List<Target> targets = civil.createTargets();
-                            ((Civil) character).moveToNearestTarget(targets);
-                        } else {
-                            character.move(Window.characters);
+                        try {
+                            if (character instanceof Civil) {
+                                Civil civil = (Civil) character;
+                                List<Target> targets = civil.createTargets();
+                                civil.moveToNearestTarget(targets);
+                            } else {
+                                character.move(Window.characters);
+                            }
+                            mainWindow.handleCollisions(character);
+                            latch.countDown();
+                        } catch (Exception e) {
+                            handleUncaughtException(e);
                         }
-                        latch.countDown();
-
                     });
-
-
                 }
-
-
-
-
 
                 try {
                     latch.await();
@@ -63,5 +61,9 @@ public class Main {
                 }
             }
         }
+    }
+    private static void handleUncaughtException(Throwable throwable) {
+        System.err.println("Uncaught exception in thread: " + Thread.currentThread().getName());
+        throwable.printStackTrace();
     }
 }
