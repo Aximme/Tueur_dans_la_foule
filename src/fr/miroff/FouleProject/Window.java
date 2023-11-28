@@ -22,8 +22,8 @@ public class Window extends JFrame {
     private int civilRemaining = 1;
     private int copRemaining = 1;
     public static final CopyOnWriteArrayList<Character> characters = new CopyOnWriteArrayList<>();
-    private final JPanel drawingPanel;
-    private final JSlider speedSlider;
+    private JPanel drawingPanel;
+    private JSlider speedSlider;
     private int banditCount = 0;
     private int escapedCount = 0;
     private int civilCount = 0;
@@ -32,14 +32,14 @@ public class Window extends JFrame {
     private int civilDeaths = 0;
     private int copDeaths = 0;
     private int movementSpeed = 1;
-    private final JLabel banditCounterLabel;
-    private final JLabel civilCounterLabel;
-    private final JLabel copCounterLabel;
-    private final JLabel deathsLabel;
-    private final SummaryWindow summaryWindow;
-    private final Image backgroundImage;
+    private JLabel banditCounterLabel;
+    private JLabel civilCounterLabel;
+    private JLabel copCounterLabel;
+    private JLabel deathsLabel;
+    private SummaryWindow summaryWindow;
+    private Image backgroundImage;
     private Building circularBuilding;
-    private final JLabel escapedCounterLabel;
+    private JLabel escapedCounterLabel;
 
 
 
@@ -82,6 +82,28 @@ public class Window extends JFrame {
         }
 
         // Mettre à jour les compteurs pour les civils et les policiers
+
+        for (int i = 0; i < banditRemaining; i++) {
+            int x, y;
+            boolean isNearBuilding;
+            do {
+                x = rand.nextInt(WINDOW_WIDTH);
+                y = rand.nextInt(WINDOW_HEIGHT - 100);
+                isNearBuilding = isNearBuilding(x, y);
+            } while (isNearBuilding);
+
+            characters.add(new Bandit(x, y, movementSpeed, this));
+            banditCount++;
+        }
+
+        for (Character character : characters) {
+            character.setMovementSpeed(movementSpeed);
+
+        }
+        for (Character character : characters) {
+            character.setBuildings(buildings);
+        }
+
         updateCounters();
 
         //TODO : Add timer for bandit spawn.
@@ -115,7 +137,7 @@ public class Window extends JFrame {
         return false;
     }
 
-    private final ArrayList<Building> buildings = new ArrayList<>();
+    private ArrayList<Building> buildings = new ArrayList<>();
 
     protected void generateBuildings() {
         buildings.clear();
@@ -352,7 +374,7 @@ public class Window extends JFrame {
             stopSimulation();
         }
     }
-    public void removeCivil(Civil civil) {
+    public void removeCivil(Civil civil) {     //TODO: Mettre à jour le compteur en live sur l"interface graphique.
         characters.remove(civil);
         escapedCount++;
         updateCounters();
@@ -372,15 +394,15 @@ public class Window extends JFrame {
     }
 
 
-    static class SummaryWindow extends JFrame {
-        private final JLabel banditLabel;
-        private final JLabel civilLabel;
-        private final JLabel copLabel;
-        private final JLabel deathsLabel;
+    class SummaryWindow extends JFrame {
+        private JLabel banditLabel;
+        private JLabel civilLabel;
+        private JLabel copLabel;
+        private JLabel deathsLabel;
 
-        private final JLabel escapedCounterLabel;
+        private JLabel escapedCounterLabel;
 
-        private final JLabel testLabel;
+        private JLabel testLabel;
 
 
         public SummaryWindow(Window mainFrame, int banditDeaths, int copDeaths, int civilDeaths, int escapedCount) {

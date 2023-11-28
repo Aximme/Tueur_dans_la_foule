@@ -1,19 +1,18 @@
 package fr.miroff.FouleProject.character;
 import fr.miroff.FouleProject.Building;
 import fr.miroff.FouleProject.Window;
-
-import java.util.List;
 import java.util.Arrays;
 import java.util.Random;
+import java.util.List;
 
 public class Character {
     protected int health;
     private int x;
     private int y;
-    static boolean canMove = true;
-    int movementSpeed;
+    protected static boolean canMove = true;
+    protected int movementSpeed;
     Window window;
-    private static final int vision = 1000 ;
+    private static final int vision = 250 ;
     protected static final List<Integer> BASE_SPEEDS = Arrays.asList(1, 2, 3);
     protected static final Random RAND = new Random();
     protected int speed;
@@ -62,27 +61,27 @@ public class Character {
         if (!canMove) {
             return;
         }
-        if (target()) {
-            pathfinding();
-        }
+
+        if (target()) {pathfinding();}
         else {
+
             int nextX = x;
             int nextY = y;
 
             if (Math.random() < 0.5) {
                 if (x < Window.WINDOW_WIDTH) {
-                    nextX += speed;
+                    nextX += movementSpeed;
                 }
             } else if (x > 0) {
-                nextX -= speed;
+                nextX -= movementSpeed;
             }
 
             if (Math.random() < 0.5) {
                 if (y < Window.WINDOW_HEIGHT - 100) { //Window Height & -100 Pour affichage en mode fenêtre
-                    nextY += speed;
+                    nextY += movementSpeed;
                 }
             } else if (y > 0) {
-                nextY -= speed;
+                nextY -= movementSpeed;
             }
             boolean canMoveX = true;
             boolean canMoveY = true;
@@ -168,7 +167,7 @@ public class Character {
 
 
     public boolean attackIsPossible(Character other) {
-        return (this instanceof Bandit && other instanceof Civil) || (this instanceof Cop && other instanceof Bandit) || (this instanceof Bandit && other instanceof Cop);
+        return (this instanceof Bandit && other instanceof Civil) || (this instanceof Cop && other instanceof Bandit);
     }
 
     public double distanceBetween(Character c) {
@@ -195,50 +194,40 @@ public class Character {
         int indice = characterClosest();
 
         if (indice != -1) {
-            double distance = distanceBetween(Window.characters.get(indice));
-            return distance < vision;
+            return true;
         } else return false;
     }
 
 
-
     public void pathfinding() {
-        if (target()) {
-            // Cible la personne la plus proche
-            int indice = characterClosest();
-            Character c = Window.characters.get(indice);
+        // Cible la personne la plus proche
+        int indice = characterClosest();
+        Character c = Window.characters.get(indice);
 
-            // Calcule les vecteurs de distance
-            int distanceX = c.getX() - this.getX();
-            int distanceY = c.getY() - this.getY();
+        // Calcule les vecteurs de distance
+        int distanceX = c.getX() - this.getX();
+        int distanceY = c.getY() - this.getY();
 
-            //Se déplace
-            if (distanceX > 0) {
-                if (x < (Window.WINDOW_WIDTH + movementSpeed)) {
-                    x += speed;
-                }
-            }
-            else if (distanceX < 0) {
-                //if (x > (Window.WINDOW_WIDTH - movementSpeed)) {
-                    x -= speed;
-              //  }
-            }
+        //Se déplace
+        if (distanceX > 0) {
+            x += movementSpeed;
+        }
+        else if (distanceX < 0) {
+            x -= movementSpeed;
+        }
 
-            if (distanceY > 0){
-                if (y < (Window.WINDOW_HEIGHT - 100 + movementSpeed)) { //Window Height & -100 Pour affichage en mode fenêtre
-                    y += speed;
-                }
-            }
-            else if (distanceY < 0) {
-              //  if (y > (Window.WINDOW_HEIGHT - 100- movementSpeed)) { //Window Height & -100 Pour affichage en mode fenêtre
-                    y -= speed;
-               // }
-            }
+        if (distanceY > 0){
+            y += movementSpeed;
+        }
+        else if (distanceY < 0) {
+            y -= movementSpeed;
 
-            for (int i = 0; i < Window.characters.size(); i++) {
-                if (Window.characters.get(i) != this) {
-                    this.interact(Window.characters.get(i));
-                }
+        }
+
+        // Gerer les collision
+        for (int i = 0; i < Window.characters.size(); i++) {
+            if (Window.characters.get(i) != this) {
+                this.interact(Window.characters.get(i));
             }
         }
     }
