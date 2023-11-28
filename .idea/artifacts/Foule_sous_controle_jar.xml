@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Foule_sous_controle:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Foule_sous_controle_jar</output-path>
+    <root id="archive" name="Foule_sous_controle.jar">
+      <element id="module-output" name="Foule_sous_controle" />
+    </root>
+  </artifact>
+</component>

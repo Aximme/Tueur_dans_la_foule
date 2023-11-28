@@ -19,7 +19,7 @@ public class Building {
         this.isCircular = false;
     }
 
-    //Constructeur bâtiment circulaire transparent (gérer les collisions avec la fontaine)
+    //Constructeur bâtiment circulaire transparent
     public Building(int x, int y, int radius) {
         this.x = x;
         this.y = y;

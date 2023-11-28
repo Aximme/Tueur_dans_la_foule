@@ -154,7 +154,6 @@ public class Character {
     public boolean hurt() {
         this.health -= 1;
         if (this.health == 0) {
-            // L'agent est mort, appeler la méthode de mise à jour des compteurs dans la classe Window
             if (window != null) {
                 window.updateCounters(this);
             }

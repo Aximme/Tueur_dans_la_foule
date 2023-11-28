@@ -1,3 +1,4 @@
+//jar cfm TestBuild1.jar MANIFEST.MF -C /Users/maxime/Desktop/Université/Projet Informatique/Tueur_dans_la_foule/src/fr/miroff/FouleProject .
 package fr.miroff.FouleProject;
 
 import fr.miroff.FouleProject.character.Bandit;
@@ -11,6 +12,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
+//import javax.swing.Timer;
 
 
 public class Window extends JFrame {
@@ -44,7 +46,7 @@ public class Window extends JFrame {
     private void generateCharacters() {
         Random rand = new Random();
         characters.clear();
-        escapedCount=0;
+        escapedCount = 0;
         banditCount = 0;
         civilCount = 0;
         copCount = 0;
@@ -52,19 +54,7 @@ public class Window extends JFrame {
         civilDeaths = 0;
         copDeaths = 0;
 
-        for (int i = 0; i < banditRemaining; i++) {
-            int x, y;
-            boolean isNearBuilding;
-            do {
-                x = rand.nextInt(WINDOW_WIDTH);
-                y = rand.nextInt(WINDOW_HEIGHT - 100);
-                isNearBuilding = isNearBuilding(x, y);
-            } while (isNearBuilding);
-
-            characters.add(new Bandit(x, y, movementSpeed, this));
-            banditCount++;
-        }
-
+        // Générer les civils et les policiers immédiatement
         for (int i = 0; i < civilRemaining; i++) {
             int x, y;
             boolean isNearBuilding;
@@ -91,16 +81,22 @@ public class Window extends JFrame {
             copCount++;
         }
 
-        for (Character character : characters) {
-            character.setMovementSpeed(movementSpeed);
-
-        }
-        for (Character character : characters) {
-            character.setBuildings(buildings);
-        }
-
-
+        // Mettre à jour les compteurs pour les civils et les policiers
         updateCounters();
+
+        //TODO : Add timer for bandit spawn.
+        for (int i = 0; i < banditRemaining; i++) {
+            int x, y;
+            boolean isNearBuilding;
+            do {
+                x = rand.nextInt(WINDOW_WIDTH);
+                y = rand.nextInt(WINDOW_HEIGHT - 100);
+                isNearBuilding = isNearBuilding(x, y);
+            } while (isNearBuilding);
+
+            characters.add(new Bandit(x, y, movementSpeed, this));
+            banditCount++;
+        }
     }
 
     private boolean isNearBuilding(int x, int y) { ///boolean qui va servir à savori si le personnage créer et assez loin d'un batiment
@@ -124,13 +120,18 @@ public class Window extends JFrame {
     protected void generateBuildings() {
         buildings.clear();
         generateCircularBuildings();
-       // buildings.add(new Building(0, 150, 100, 450));  // je le mets en commentaires juste pour test convergence des civils
-      //  buildings.add(new Building(300, 0, 450, 120));
+        buildings.add(new Building(0, 0, 435, 60));//rectangle en haut a gauche avant evac
+        buildings.add(new Building(480, 47, 530, 60));//Barre batiments haut de evac a droite extreme
+        buildings.add(new Building(980, 47, 470, 140));//rectangle en haut a droite
+        buildings.add(new Building(1385, 0, 70, 780));//barre droite extreme
+        buildings.add(new Building(980, 595, 500, 350));//eau en bas a droite
+        buildings.add(new Building(525, 620, 385, 150));//eau milieu
+        buildings.add(new Building(0, 630, 494, 150));//eau bas a gauche
     }
     private void generateCircularBuildings() {
-        circularBuilding = new Building(726,385,85);
-        buildings.add(circularBuilding);
-        
+        //circularBuilding = new Building(726,385,85); //TODO: Add some circular colisions (tree, fountain...)
+        //buildings.add(circularBuilding);
+
     }
 
 
@@ -179,7 +180,7 @@ public class Window extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        backgroundImage = new ImageIcon("src/fr/miroff/FouleProject/img/2d.jpg").getImage();
+        backgroundImage = new ImageIcon("src/fr/miroff/FouleProject/img/louvre.png").getImage();
 
         banditCounterLabel = new JLabel("🥷 Bandits en Vie : " + banditCount);
         civilCounterLabel = new JLabel("👤 Civils en vie : " + civilCount);
@@ -298,11 +299,11 @@ public class Window extends JFrame {
             if (character instanceof Bandit) {
                 g.setColor(Color.RED);
             } else if (character instanceof Civil) {
-                g.setColor(Color.BLACK);
+                g.setColor(Color.WHITE);
             } else if (character instanceof Cop) {
                 g.setColor(Color.BLUE);
             }
-            drawCircle(g, character.getX(), character.getY(), 10);
+            drawCircle(g, character.getX(), character.getY(), 7);//10
         }
         for (Building building : buildings) {
             building.draw(g);
