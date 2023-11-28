@@ -15,13 +15,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        CountDownLatch buildingsReadyLatch = new CountDownLatch(1);
-        SwingUtilities.invokeLater(() -> {
-        mainWindow = new Window();
-        mainWindow.generateBuildings();
-        buildingsReadyLatch.countDown();
-    });
-
+        SwingUtilities.invokeLater(() -> mainWindow = new Window());
 
 
         try(final ExecutorService executor = Executors.newFixedThreadPool(10)){
@@ -30,7 +24,8 @@ public class Main {
 
                 for (Character character : Window.characters) {
                     executor.submit(() -> {
-                        if (character instanceof Civil civil) {
+                        if (character instanceof Civil) {
+                            Civil civil = (Civil) character;
                             List<Target> targets = civil.createTargets();
                             ((Civil) character).moveToNearestTarget(targets);
                         } else {
@@ -40,7 +35,13 @@ public class Main {
 
                     });
 
+
                 }
+
+
+
+
+
                 try {
                     latch.await();
 
