@@ -1,17 +1,21 @@
 package fr.miroff.FouleProject.character;
 import fr.miroff.FouleProject.Building;
 import fr.miroff.FouleProject.Window;
-
+import java.util.Arrays;
+import java.util.Random;
 import java.util.List;
 
 public class Character {
     protected int health;
     private int x;
     private int y;
-    private static boolean canMove = true;
-    private int movementSpeed;
+    protected static boolean canMove = true;
+    protected int movementSpeed;
     Window window;
     private static final int vision = 250 ;
+    protected static final List<Integer> BASE_SPEEDS = Arrays.asList(1, 2, 3);
+    protected static final Random RAND = new Random();
+    protected int speed;
 
 
     public Character(int x, int y, int movementSpeed, Window window) {
@@ -19,8 +23,11 @@ public class Character {
         this.y = y;
         this.movementSpeed = movementSpeed;
         this.window = window;
+        this.speed = chooseRandomSpeed();
     }
-
+    protected int chooseRandomSpeed() {
+        return BASE_SPEEDS.get(RAND.nextInt(BASE_SPEEDS.size()));
+    }
 
     public int getX() {
         return x;

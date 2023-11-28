@@ -3,14 +3,11 @@ package fr.miroff.FouleProject;
 import fr.miroff.FouleProject.character.Character;
 import fr.miroff.FouleProject.character.Civil;
 import fr.miroff.FouleProject.character.Target;
-
-
 import javax.swing.*;
 import java.util.List;
 import java.util.concurrent.*;
 
 public class Main {
-
     private static Window mainWindow;
 
     public static void main(String[] args) {
@@ -21,8 +18,6 @@ public class Main {
         mainWindow.generateBuildings();
         buildingsReadyLatch.countDown();
     });
-
-
 
         try(final ExecutorService executor = Executors.newFixedThreadPool(10)){
             while (true) {

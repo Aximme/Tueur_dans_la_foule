@@ -52,19 +52,6 @@ public class Window extends JFrame {
         civilDeaths = 0;
         copDeaths = 0;
 
-        for (int i = 0; i < banditRemaining; i++) {
-            int x, y;
-            boolean isNearBuilding;
-            do {
-                x = rand.nextInt(WINDOW_WIDTH);
-                y = rand.nextInt(WINDOW_HEIGHT - 100);
-                isNearBuilding = isNearBuilding(x, y);
-            } while (isNearBuilding);
-
-            characters.add(new Bandit(x, y, movementSpeed, this));
-            banditCount++;
-        }
-
         for (int i = 0; i < civilRemaining; i++) {
             int x, y;
             boolean isNearBuilding;
@@ -89,6 +76,19 @@ public class Window extends JFrame {
 
             characters.add(new Cop(x, y, movementSpeed, this));
             copCount++;
+        }
+
+        for (int i = 0; i < banditRemaining; i++) {
+            int x, y;
+            boolean isNearBuilding;
+            do {
+                x = rand.nextInt(WINDOW_WIDTH);
+                y = rand.nextInt(WINDOW_HEIGHT - 100);
+                isNearBuilding = isNearBuilding(x, y);
+            } while (isNearBuilding);
+
+            characters.add(new Bandit(x, y, movementSpeed, this));
+            banditCount++;
         }
 
         for (Character character : characters) {
