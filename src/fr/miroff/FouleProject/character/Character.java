@@ -9,7 +9,7 @@ public class Character {
     private int x;
     private int y;
     private static boolean canMove = true;
-    protected double movementSpeed;
+    private int movementSpeed;
     Window window;
     private static final int vision = 250 ;
 
@@ -54,7 +54,7 @@ public class Character {
         if (!canMove) {
             return;
         }
-        
+
         if (target()) {pathfinding();}
         else {
 
