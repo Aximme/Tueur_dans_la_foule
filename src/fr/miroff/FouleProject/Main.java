@@ -36,6 +36,7 @@ public class Main {
                         } else {
                             character.move(Window.characters);
                         }
+                        mainWindow.handleCollisions(character);
                         latch.countDown();
 
                     });
@@ -56,7 +57,7 @@ public class Main {
                         mainWindow.display();
                     }
 
-                    Thread.sleep(10);
+                    Thread.sleep(50);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                     break;

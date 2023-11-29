@@ -12,7 +12,7 @@ public class Character {
     protected static boolean canMove = true;
     protected int movementSpeed;
     Window window;
-    private static final int vision = 250 ;
+    private static final int vision = 500 ;
     protected static final List<Integer> BASE_SPEEDS = Arrays.asList(1, 2, 3);
     protected static final Random RAND = new Random();
     protected int speed;
@@ -128,7 +128,6 @@ public class Character {
     }
 
 
-
     private boolean isColliding(Character other) {
         double distance = Math.sqrt(Math.pow(this.x - other.x, 2) + Math.pow(this.y - other.y, 2));
         int sumOfRadii = 10 + 10;
@@ -148,6 +147,20 @@ public class Character {
                 other.y += 1;
             }
         }
+    }
+
+    public void adjustPositions(Character other) {
+        int dx = other.getX() - this.getX();
+        int dy = other.getY() - this.getY();
+
+        double length = Math.sqrt(dx * dx + dy * dy);
+        dx = (int) (dx / length);
+        dy = (int) (dy / length);
+
+        this.setX(this.getX() - dx);
+        this.setY(this.getY() - dy);
+        other.setX(other.getX() + dx);
+        other.setY(other.getY() + dy);
     }
 
     public boolean hurt() {
@@ -200,34 +213,34 @@ public class Character {
 
 
     public void pathfinding() {
-        // Cible la personne la plus proche
-        int indice = characterClosest();
-        Character c = Window.characters.get(indice);
+        if (target()) {
+            // Cible la personne la plus proche
+            int indice = characterClosest();
+            Character c = Window.characters.get(indice);
 
-        // Calcule les vecteurs de distance
-        int distanceX = c.getX() - this.getX();
-        int distanceY = c.getY() - this.getY();
+            // Calcule les vecteurs de distance
+            int distanceX = c.getX() - this.getX();
+            int distanceY = c.getY() - this.getY();
 
-        //Se déplace
-        if (distanceX > 0) {
-            x += movementSpeed;
-        }
-        else if (distanceX < 0) {
-            x -= movementSpeed;
-        }
+            //Se déplace
+            if (distanceX > 0) {
+                x += movementSpeed;
+            } else if (distanceX < 0) {
+                x -= movementSpeed;
+            }
 
-        if (distanceY > 0){
-            y += movementSpeed;
-        }
-        else if (distanceY < 0) {
-            y -= movementSpeed;
+            if (distanceY > 0) {
+                y += movementSpeed;
+            } else if (distanceY < 0) {
+                y -= movementSpeed;
 
-        }
+            }
 
-        // Gerer les collision
-        for (int i = 0; i < Window.characters.size(); i++) {
-            if (Window.characters.get(i) != this) {
-                this.interact(Window.characters.get(i));
+            // Gerer les collision
+            for (int i = 0; i < Window.characters.size(); i++) {
+                if (Window.characters.get(i) != this) {
+                    this.interact(Window.characters.get(i));
+                }
             }
         }
     }
