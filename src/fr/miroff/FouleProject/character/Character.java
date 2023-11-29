@@ -17,6 +17,7 @@ public class Character {
     protected static final Random RAND = new Random();
     protected int speed;
 
+    private final List<Building> buildings;
 
     public Character(int x, int y, int movementSpeed, Window window) {
         this.x = x;
@@ -24,6 +25,7 @@ public class Character {
         this.movementSpeed = movementSpeed;
         this.window = window;
         this.speed = chooseRandomSpeed();
+        this.buildings = window.buildings;
     }
     protected int chooseRandomSpeed() {
         return BASE_SPEEDS.get(RAND.nextInt(BASE_SPEEDS.size()));
@@ -83,27 +85,13 @@ public class Character {
             } else if (y > 0) {
                 nextY -= movementSpeed;
             }
-            boolean canMoveX = true;
-            boolean canMoveY = true;
 
             for (Building building : buildings) {
-                if (isCollidingWithBuilding(nextX, y, building)) {
-                    canMoveX = false;
+                if (!isCollidingWithBuilding(nextX, y, building)) {
+                    x = nextX;
                 }
-                if (isCollidingWithBuilding(x, nextY, building)) {
-                    canMoveY = false;
-                }
-            }
-            if (canMoveX) {
-                x = nextX;
-            }
-            if (canMoveY) {
-                y = nextY;
-            }
-
-            for (Character other : characters) {
-                if (other != this) {
-                    this.interact(other);
+                if (!isCollidingWithBuilding(x, nextY, building)) {
+                    y = nextY;
                 }
             }
         }
@@ -113,54 +101,14 @@ public class Character {
         this.movementSpeed = movementSpeed;
     }
 
-
-
-    private List<Building> buildings; // Ajout de la liste des bâtiments
-
-    public void setBuildings(List<Building> buildings) {
-        this.buildings = buildings;
-    }
-
     private boolean isCollidingWithBuilding(int pointX, int pointY, Building building) {
         return pointX >= building.getX()-20 && pointX <= building.getX() + building.getWidth()+20 &&
                 pointY >= building.getY()-20 && pointY <= building.getY() + building.getHeight()+20;
 
     }
 
-
-    private boolean isColliding(Character other) {
-        double distance = Math.sqrt(Math.pow(this.x - other.x, 2) + Math.pow(this.y - other.y, 2));
-        int sumOfRadii = 10 + 10;
-        return distance <= sumOfRadii;
-    }
-
     public void interact(Character other) {
-        if (this.isColliding(other)) {
-            if (this instanceof Bandit && other instanceof Civil) {
-                other.hurt();
-            } else if (this instanceof Cop && other instanceof Bandit) {
-                other.hurt();
-            } else {
-                this.x -= 1;
-                this.y -= 1;
-                other.x += 1;
-                other.y += 1;
-            }
-        }
-    }
-
-    public void adjustPositions(Character other) {
-        int dx = other.getX() - this.getX();
-        int dy = other.getY() - this.getY();
-
-        double length = Math.sqrt(dx * dx + dy * dy);
-        dx = (int) (dx / length);
-        dy = (int) (dy / length);
-
-        this.setX(this.getX() - dx);
-        this.setY(this.getY() - dy);
-        other.setX(other.getX() + dx);
-        other.setY(other.getY() + dy);
+        other.hurt();
     }
 
     public boolean hurt() {
@@ -177,14 +125,26 @@ public class Character {
         return this.health > 0;
     }
 
-
-
     public boolean attackIsPossible(Character other) {
         return (this instanceof Bandit && other instanceof Civil) || (this instanceof Cop && other instanceof Bandit);
     }
 
     public double distanceBetween(Character c) {
         return Math.sqrt(Math.pow(this.x - c.getX(), 2) + Math.pow(this.y - c.getY(), 2));
+    }
+
+    public void adjustPositions(Character other) {
+        int dx = other.getX() - this.getX();
+        int dy = other.getY() - this.getY();
+
+        double length = Math.sqrt(dx * dx + dy * dy);
+        dx = (int) (dx / length);
+        dy = (int) (dy / length);
+
+        this.setX(this.getX() - dx);
+        this.setY(this.getY() - dy);
+        other.setX(other.getX() + dx);
+        other.setY(other.getY() + dy);
     }
 
     public int characterClosest() {
@@ -233,7 +193,6 @@ public class Character {
                 y += movementSpeed;
             } else if (distanceY < 0) {
                 y -= movementSpeed;
-
             }
 
             // Gerer les collision

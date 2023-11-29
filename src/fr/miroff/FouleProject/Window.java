@@ -1,9 +1,9 @@
 package fr.miroff.FouleProject;
 
 import fr.miroff.FouleProject.character.Bandit;
+import fr.miroff.FouleProject.character.Character;
 import fr.miroff.FouleProject.character.Civil;
 import fr.miroff.FouleProject.character.Cop;
-import fr.miroff.FouleProject.character.Character;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -94,12 +94,10 @@ public class Window extends JFrame {
             character.setMovementSpeed(movementSpeed);
 
         }
-        for (Character character : characters) {
-            character.setBuildings(buildings);
-        }
-
 
         updateCounters();
+
+        //TODO : Add timer for bandit spawn.
     }
 
     private boolean isNearBuilding(int x, int y) { ///boolean qui va servir à savori si le personnage créer et assez loin d'un batiment
@@ -118,7 +116,7 @@ public class Window extends JFrame {
         return false;
     }
 
-    private ArrayList<Building> buildings = new ArrayList<>();
+    public final ArrayList<Building> buildings = new ArrayList<>();
 
     protected void generateBuildings() {
         buildings.clear();
@@ -141,6 +139,14 @@ public class Window extends JFrame {
         circularBuilding = new Building(183,347,40);//250 et 200 et 40
         buildings.add(circularBuilding);
     }*/
+
+
+    private void generateCircularBuildings() {
+        //circularBuilding = new Building(726,385,85); //TODO: Add some circular colisions (tree, fountain...)
+        //buildings.add(circularBuilding);
+
+    }
+
     private boolean noMoreBandits() {
         return (banditCount == 0);
     }
@@ -185,24 +191,21 @@ public class Window extends JFrame {
         }
         return null;
     }
-
-
     protected void handleCollisions(Character character) {
-        final double MIN_DISTANCE = 25.0;
+        final double MIN_DISTANCE_ATTACK = 10.0;
+        final double MIN_DISTANCE = 50.0;
 
         for (Character otherCharacter : characters) {
             if (otherCharacter != character && character.distanceBetween(otherCharacter) < MIN_DISTANCE) {
-                if (character instanceof Civil && otherCharacter instanceof Bandit) {
-                    character.hurt();
-                } else if (character instanceof Cop && otherCharacter instanceof Bandit) {
-                    otherCharacter.hurt();
-                } else {
+                if (!(character instanceof Bandit && otherCharacter instanceof Civil) &&
+                        !(character instanceof Cop && otherCharacter instanceof Bandit)) {
                     character.adjustPositions(otherCharacter);
+                } else if (character.distanceBetween(otherCharacter) < MIN_DISTANCE_ATTACK) {
+                    character.interact(otherCharacter);
                 }
             }
         }
     }
-
 
     public Window() {
         setTitle("Tueurs dans la Foule !");
@@ -386,13 +389,10 @@ public class Window extends JFrame {
             stopSimulation();
         }
     }
-
     public void removeCivil(Civil civil) {     //TODO: Mettre à jour le compteur en live sur l"interface graphique.
         characters.remove(civil);
         escapedCount++;
         updateCounters();
-
-
     }
 
 
@@ -401,6 +401,7 @@ public class Window extends JFrame {
             new Window();
         });
     }
+}
 
 
     class SummaryWindow extends JFrame {
@@ -453,4 +454,4 @@ public class Window extends JFrame {
             deathsLabel.setText(" 🥷 Bandits: " + banditDeaths + " 👤 Civils: " + civilDeaths + " 🚓 Policiers: " + copDeaths);
         }
     }
-}
+
