@@ -12,7 +12,7 @@ public class Character {
     protected static boolean canMove = true;
     protected int movementSpeed;
     Window window;
-    private static final int vision = 500 ;
+    private static final int vision = 500;
     protected static final List<Integer> BASE_SPEEDS = Arrays.asList(1, 2, 3);
     protected static final Random RAND = new Random();
     protected int speed;
@@ -27,6 +27,7 @@ public class Character {
         this.speed = chooseRandomSpeed();
         this.buildings = window.buildings;
     }
+
     protected int chooseRandomSpeed() {
         return BASE_SPEEDS.get(RAND.nextInt(BASE_SPEEDS.size()));
     }
@@ -48,7 +49,6 @@ public class Character {
     }
 
 
-
     public static void stopMovements() {
         canMove = false;
     }
@@ -56,6 +56,7 @@ public class Character {
     public static void resumeMovements() {
         canMove = true;
     }
+
     protected void avoidBuildings() {
         int nextX = x + movementSpeed; // Déplacement vers la droite par défaut
         int nextY = y;
@@ -83,8 +84,6 @@ public class Character {
             y = nextY;
         }
     }
-
-
 
 
     public void move(List<Character> characters) {
@@ -142,9 +141,10 @@ public class Character {
 
 
     protected boolean isCollidingWithBuilding(int pointX, int pointY, Building building) {
-        return pointX >= building.getX()-20 && pointX <= building.getX() + building.getWidth()+20 &&
-              pointY >= building.getY()-20 && pointY <= building.getY() + building.getHeight()+20;
+        return pointX >= building.getX() - 20 && pointX <= building.getX() + building.getWidth() + 20 &&
+                pointY >= building.getY() - 20 && pointY <= building.getY() + building.getHeight() + 20;
 
+    }
 
 
     public void interact(Character other) {
@@ -250,36 +250,13 @@ public class Character {
                 y = nextY;
             }
 
-        if (target()) {
-            // Cible la personne la plus proche
-            int indice = characterClosest();
-            Character c = Window.characters.get(indice);
 
-            // Calcule les vecteurs de distance
-            int distanceX = c.getX() - this.getX();
-            int distanceY = c.getY() - this.getY();
 
-            //Se déplace
-            if (distanceX > 0) {
-                x += movementSpeed;
-            } else if (distanceX < 0) {
-                x -= movementSpeed;
+            
+
             }
-
-            if (distanceY > 0) {
-                y += movementSpeed;
-            } else if (distanceY < 0) {
-                y -= movementSpeed;
-            }
-
-            // Gerer les collision
-            for (int i = 0; i < Window.characters.size(); i++) {
-                if (Window.characters.get(i) != this) {
-                    this.interact(Window.characters.get(i));
-                }
-            }
-
         }
+
     }
 
-}
+
