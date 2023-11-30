@@ -12,7 +12,7 @@ public class Character {
     protected static boolean canMove = true;
     protected int movementSpeed;
     Window window;
-    private static final int vision = 250 ;
+    private static final int vision = 500 ;
     protected static final List<Integer> BASE_SPEEDS = Arrays.asList(1, 2, 3);
     protected static final Random RAND = new Random();
     protected int speed;
@@ -140,11 +140,12 @@ public class Character {
         this.movementSpeed = movementSpeed;
     }
 
+
     protected boolean isCollidingWithBuilding(int pointX, int pointY, Building building) {
         return pointX >= building.getX()-20 && pointX <= building.getX() + building.getWidth()+20 &&
               pointY >= building.getY()-20 && pointY <= building.getY() + building.getHeight()+20;
 
-    }
+
 
     public void interact(Character other) {
         other.hurt();
@@ -212,6 +213,7 @@ public class Character {
 
 
     public void pathfinding() {
+
         // Cible la personne la plus proche
         int indice = characterClosest();
 
@@ -247,6 +249,36 @@ public class Character {
             if (canMoveY && nextY >= 0 && nextY < Window.WINDOW_HEIGHT - 100) {
                 y = nextY;
             }
+
+        if (target()) {
+            // Cible la personne la plus proche
+            int indice = characterClosest();
+            Character c = Window.characters.get(indice);
+
+            // Calcule les vecteurs de distance
+            int distanceX = c.getX() - this.getX();
+            int distanceY = c.getY() - this.getY();
+
+            //Se déplace
+            if (distanceX > 0) {
+                x += movementSpeed;
+            } else if (distanceX < 0) {
+                x -= movementSpeed;
+            }
+
+            if (distanceY > 0) {
+                y += movementSpeed;
+            } else if (distanceY < 0) {
+                y -= movementSpeed;
+            }
+
+            // Gerer les collision
+            for (int i = 0; i < Window.characters.size(); i++) {
+                if (Window.characters.get(i) != this) {
+                    this.interact(Window.characters.get(i));
+                }
+            }
+
         }
     }
 

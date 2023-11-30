@@ -1,4 +1,3 @@
-//jar cfm TestBuild1.jar MANIFEST.MF -C /Users/maxime/Desktop/Université/Projet Informatique/Tueur_dans_la_foule/src/fr/miroff/FouleProject .
 package fr.miroff.FouleProject;
 
 import fr.miroff.FouleProject.character.Bandit;
@@ -12,7 +11,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
-//import javax.swing.Timer;
+
 
 
 public class Window extends JFrame {
@@ -41,7 +40,6 @@ public class Window extends JFrame {
     private Building circularBuilding;
     private final JLabel escapedCounterLabel;
 
-
     private void generateCharacters() {
         Random rand = new Random();
         characters.clear();
@@ -53,7 +51,6 @@ public class Window extends JFrame {
         civilDeaths = 0;
         copDeaths = 0;
 
-        // Générer les civils et les policiers immédiatement
         for (int i = 0; i < civilRemaining; i++) {
             int x, y;
             boolean isNearBuilding;
@@ -79,8 +76,6 @@ public class Window extends JFrame {
             characters.add(new Cop(x, y, movementSpeed, this));
             copCount++;
         }
-
-        // Mettre à jour les compteurs pour les civils et les policiers
 
         for (int i = 0; i < banditRemaining; i++) {
             int x, y;
@@ -125,7 +120,6 @@ public class Window extends JFrame {
 
     protected void generateBuildings() {
         buildings.clear();
-        generateCircularBuildings();
         buildings.add(new Building(0, 0, 435, 60));//rectangle en haut a gauche avant evac
         buildings.add(new Building(480, 47, 530, 60));//Barre batiments haut de evac a droite extreme
         buildings.add(new Building(980, 47, 470, 140));//rectangle en haut a droite
@@ -133,7 +127,19 @@ public class Window extends JFrame {
         buildings.add(new Building(980, 595, 500, 350));//eau en bas a droite
         buildings.add(new Building(525, 620, 385, 150));//eau milieu
         buildings.add(new Building(0, 630, 494, 150));//eau bas a gauche
+        buildings.add(new Building(187, 312, 40));//big fontaine gauche
+        buildings.add(new Building(323, 210, 21));//gauche en haut
+        buildings.add(new Building(319, 424, 21));//gauche en bas
+        buildings.add(new Building(903, 298, 49));//rond point centre
+        //buildings.add(new Building(1077,214,140,130));//pyramide louvre
+        buildings.add(new Building(1090, 310, 140, 130));//rond point centre
     }
+
+    /*private void generateCircularBuildings() {
+        circularBuilding = new Building(183,347,40);//250 et 200 et 40
+        buildings.add(circularBuilding);
+    }*/
+
 
     private void generateCircularBuildings() {
         //circularBuilding = new Building(726,385,85); //TODO: Add some circular colisions (tree, fountain...)
@@ -160,29 +166,31 @@ public class Window extends JFrame {
             e.printStackTrace();
         }
         Character.stopMovements();
-        displaySimulationFinishedWindow();
         displaySummaryWindow();
     }
 
-    private void displaySimulationFinishedWindow() {
-        if (banditCount == 0) {
-            JOptionPane.showMessageDialog(this, "Simulation terminée. Il n'y a plus de bandits en vie.");
-        }
-
-        if (civilCount == 0) {
-            JOptionPane.showMessageDialog(this, "Simulation terminée. Il n'y a plus de civils en vie.");
-        }
-
-        if (banditCount == 0 && copCount == 0) {
-            JOptionPane.showMessageDialog(this, "Simulation terminée. Il n'y a plus de policiers ni de bandits en vie.");
-        }
-    }
 
     private void displaySummaryWindow() {
         summaryWindow.displaySummary(banditCount, civilCount, copCount, banditDeaths, civilDeaths, copDeaths, escapedCount);
         summaryWindow.setVisible(true);
     }
 
+    private String getEndingMessage() {
+        if (banditCount == 0) {
+            JOptionPane.showMessageDialog(this, "✅ Simulation terminée. Il n'y a plus de bandits en vie.");
+        }
+
+        if (civilCount == 0) {
+            JOptionPane.showMessageDialog(this, "✅ Simulation terminée. Il n'y a plus de civils en vie.");
+        }
+
+        if (banditCount == 0 && copCount == 0) {
+            JOptionPane.showMessageDialog(this, "✅ Simulation terminée. Il n'y a plus de policiers ni de bandits en vie.");
+        } else {
+            JOptionPane.showMessageDialog(this,"⚠️ Simulation stoppée avant la fin");
+        }
+        return null;
+    }
     protected void handleCollisions(Character character) {
         final double MIN_DISTANCE_ATTACK = 10.0;
         final double MIN_DISTANCE = 50.0;
@@ -204,6 +212,10 @@ public class Window extends JFrame {
         setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+
+        //TODO : remove after positioning buildings !!
+        generateBuildings();
+        //generateCircularBuildings();
 
         backgroundImage = new ImageIcon("src/fr/miroff/FouleProject/img/louvre.png").getImage();
 
@@ -246,7 +258,7 @@ public class Window extends JFrame {
 
 
                 generateBuildings();
-                generateCircularBuildings();
+                //generateCircularBuildings();
                 generateCharacters();
                 repaint();
             } catch (NumberFormatException ex) {
@@ -328,7 +340,7 @@ public class Window extends JFrame {
             } else if (character instanceof Cop) {
                 g.setColor(Color.BLUE);
             }
-            drawCircle(g, character.getX(), character.getY(), 7);//10
+            drawCircle(g, character.getX(), character.getY(), 7);
         }
         for (Building building : buildings) {
             building.draw(g);
@@ -377,13 +389,10 @@ public class Window extends JFrame {
             stopSimulation();
         }
     }
-
-    public void removeCivil(Civil civil) {
+    public void removeCivil(Civil civil) {     //TODO: Mettre à jour le compteur en live sur l"interface graphique.
         characters.remove(civil);
         escapedCount++;
         updateCounters();
-
-
     }
 
 
@@ -392,6 +401,7 @@ public class Window extends JFrame {
             new Window();
         });
     }
+}
 
 
     class SummaryWindow extends JFrame {
@@ -444,4 +454,4 @@ public class Window extends JFrame {
             deathsLabel.setText(" 🥷 Bandits: " + banditDeaths + " 👤 Civils: " + civilDeaths + " 🚓 Policiers: " + copDeaths);
         }
     }
-}
+
