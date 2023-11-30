@@ -17,7 +17,7 @@ public class Character {
     protected static final Random RAND = new Random();
     protected int speed;
 
-    private final List<Building> buildings;
+    final List<Building> buildings;
 
     public Character(int x, int y, int movementSpeed, Window window) {
         this.x = x;
@@ -56,6 +56,34 @@ public class Character {
     public static void resumeMovements() {
         canMove = true;
     }
+    protected void avoidBuildings() {
+        int nextX = x + movementSpeed; // Déplacement vers la droite par défaut
+        int nextY = y;
+
+        // Vérifie les collisions avec les bâtiments pour éviter les obstacles
+        for (Building building : buildings) {
+            if (isCollidingWithBuilding(nextX, y, building)) {
+                // Si une collision est détectée, ajustez la direction du déplacement
+                if (Math.random() < 0.5) {
+                    // Déplacez-vous vers le haut
+                    nextX = x;
+                    nextY = y + movementSpeed;
+                } else {
+                    // Déplacez-vous vers le bas
+                    nextX = x;
+                    nextY = y - movementSpeed;
+                }
+                break; // Sortez de la boucle, ne vérifiez pas les autres bâtiments
+            }
+        }
+
+        // Applique le déplacement si pas de collision avec les bâtiments
+        if (nextX >= 0 && nextX < Window.WINDOW_WIDTH && nextY >= 0 && nextY < Window.WINDOW_HEIGHT - 100) {
+            x = nextX;
+            y = nextY;
+        }
+    }
+
 
 
 
@@ -64,47 +92,58 @@ public class Character {
             return;
         }
 
-        if (target()) {pathfinding();}
-        else {
+        if (target()) {
+            pathfinding();
+        } else {
+            int nextX = getX();
+            int nextY = getY();
 
-            int nextX = x;
-            int nextY = y;
-
+            // Logique de mouvement aléatoire
             if (Math.random() < 0.5) {
-                if (x < Window.WINDOW_WIDTH) {
-                    nextX += movementSpeed;
-                }
-            } else if (x > 0) {
+                nextX += movementSpeed;
+            } else {
                 nextX -= movementSpeed;
             }
 
             if (Math.random() < 0.5) {
-                if (y < Window.WINDOW_HEIGHT - 100) { //Window Height & -100 Pour affichage en mode fenêtre
-                    nextY += movementSpeed;
-                }
-            } else if (y > 0) {
+                nextY += movementSpeed;
+            } else {
                 nextY -= movementSpeed;
             }
 
+            // Vérifie les collisions avec les bâtiments
+            boolean canMoveX = true;
+            boolean canMoveY = true;
+
             for (Building building : buildings) {
-                if (!isCollidingWithBuilding(nextX, y, building)) {
-                    x = nextX;
+                if (isCollidingWithBuilding(nextX, getY(), building)) {
+                    canMoveX = false;
                 }
-                if (!isCollidingWithBuilding(x, nextY, building)) {
-                    y = nextY;
+                if (isCollidingWithBuilding(getX(), nextY, building)) {
+                    canMoveY = false;
                 }
+            }
+
+            // Applique les déplacements si pas de collision avec les bâtiments
+            if (canMoveX && nextX >= 0 && nextX < Window.WINDOW_WIDTH) {
+                setX(nextX);
+            }
+
+            if (canMoveY && nextY >= 0 && nextY < Window.WINDOW_HEIGHT - 100) {
+                setY(nextY);
             }
         }
     }
+
 
     public void setMovementSpeed(int movementSpeed) {
         this.movementSpeed = movementSpeed;
     }
 
-    private boolean isCollidingWithBuilding(int pointX, int pointY, Building building) {
-        //return pointX >= building.getX()-20 && pointX <= building.getX() + building.getWidth()+20 &&
-         //       pointY >= building.getY()-20 && pointY <= building.getY() + building.getHeight()+20;
-        return false;
+    protected boolean isCollidingWithBuilding(int pointX, int pointY, Building building) {
+        return pointX >= building.getX()-20 && pointX <= building.getX() + building.getWidth()+20 &&
+              pointY >= building.getY()-20 && pointY <= building.getY() + building.getHeight()+20;
+
     }
 
     public void interact(Character other) {
@@ -175,26 +214,40 @@ public class Character {
     public void pathfinding() {
         // Cible la personne la plus proche
         int indice = characterClosest();
-        Character c = Window.characters.get(indice);
 
-        // Calcule les vecteurs de distance
-        int distanceX = c.getX() - this.getX();
-        int distanceY = c.getY() - this.getY();
+        if (indice != -1) {
+            Character c = Window.characters.get(indice);
 
-        //Se déplace
-        if (distanceX > 0) {
-            x += movementSpeed;
-        }
-        else if (distanceX < 0) {
-            x -= movementSpeed;
-        }
+            // Calcule les vecteurs de distance
+            int distanceX = c.getX() - this.getX();
+            int distanceY = c.getY() - this.getY();
 
-        if (distanceY > 0){
-            y += movementSpeed;
-        }
-        else if (distanceY < 0) {
-            y -= movementSpeed;
+            // Logique d'évitement des bâtiments
+            int nextX = x + (int) Math.signum(distanceX) * movementSpeed;
+            int nextY = y + (int) Math.signum(distanceY) * movementSpeed;
 
+            // Vérifie les collisions avec les bâtiments
+            boolean canMoveX = true;
+            boolean canMoveY = true;
+
+            for (Building building : buildings) {
+                if (isCollidingWithBuilding(nextX, y, building)) {
+                    canMoveX = false;
+                }
+                if (isCollidingWithBuilding(x, nextY, building)) {
+                    canMoveY = false;
+                }
+            }
+
+            // Applique les déplacements si pas de collision avec les bâtiments
+            if (canMoveX && nextX >= 0 && nextX < Window.WINDOW_WIDTH) {
+                x = nextX;
+            }
+
+            if (canMoveY && nextY >= 0 && nextY < Window.WINDOW_HEIGHT - 100) {
+                y = nextY;
+            }
         }
     }
+
 }
