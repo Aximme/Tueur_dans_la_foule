@@ -52,4 +52,12 @@ public class Building {
     public int getHeight() {
         return height;
     }
+
+    public int getRadius() {
+        return radius;
+    }
+
+    public void setRadius(int radius) {
+        this.radius = radius;
+    }
 }

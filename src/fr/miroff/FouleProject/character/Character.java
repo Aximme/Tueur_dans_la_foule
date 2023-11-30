@@ -76,9 +76,22 @@ public class Character {
                 }
                 break; // Sortez de la boucle, ne vérifiez pas les autres bâtiments
             }
+
+        }
+        for (Building circularBuilding : buildings) {
+            if (isCollidingWithCircularBuilding(nextX, y, circularBuilding)) {
+                // Si une collision avec un bâtiment circulaire est détectée,
+                // ajustez la direction du déplacement pour s'éloigner du cercle
+                double angleToCenter = Math.atan2(circularBuilding.getY() - y, circularBuilding.getX() - x);
+                int distanceToMove = circularBuilding.getRadius() + 1;  // +1 pour s'éloigner légèrement du bord
+                nextX = x + (int) (distanceToMove * Math.cos(angleToCenter));
+                nextY = y + (int) (distanceToMove * Math.sin(angleToCenter));
+                break; // Sortez de la boucle, ne vérifiez pas les autres bâtiments circulaires
+            }
         }
 
-        // Applique le déplacement si pas de collision avec les bâtiments
+
+            // Applique le déplacement si pas de collision avec les bâtiments
         if (nextX >= 0 && nextX < Window.WINDOW_WIDTH && nextY >= 0 && nextY < Window.WINDOW_HEIGHT - 100) {
             x = nextX;
             y = nextY;
@@ -94,6 +107,7 @@ public class Character {
         if (target()) {
             pathfinding();
         } else {
+            avoidBuildings();
             int nextX = getX();
             int nextY = getY();
 
@@ -144,6 +158,16 @@ public class Character {
         return pointX >= building.getX() - 20 && pointX <= building.getX() + building.getWidth() + 20 &&
                 pointY >= building.getY() - 20 && pointY <= building.getY() + building.getHeight() + 20;
 
+    }
+    protected boolean isCollidingWithCircularBuilding(int pointX, int pointY, Building building) {
+        int buildingX = building.getX();
+        int buildingY = building.getY();
+        int buildingRadius = building.getRadius();
+
+        int distanceSquared = (pointX - buildingX) * (pointX - buildingX) + (pointY - buildingY) * (pointY - buildingY);
+        int radiusSquared = buildingRadius * buildingRadius;
+
+        return distanceSquared <= radiusSquared;
     }
 
 
@@ -239,6 +263,13 @@ public class Character {
                 if (isCollidingWithBuilding(x, nextY, building)) {
                     canMoveY = false;
                 }
+                if (isCollidingWithCircularBuilding(nextX,y,building)){
+                    canMoveX= false;
+
+                }
+                if(isCollidingWithCircularBuilding(x,nextY,building)){
+                    canMoveY= false;
+                }
             }
 
             // Applique les déplacements si pas de collision avec les bâtiments
@@ -252,7 +283,7 @@ public class Character {
 
 
 
-            
+
 
             }
         }
