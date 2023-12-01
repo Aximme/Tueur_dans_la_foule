@@ -5,17 +5,17 @@
 Bienvenue dans le projet "Tueur dans la Foule" ! Ce projet est un exemple simple de système multi-agents (SMA) en Java, mettant en scène trois types d'agents : les civils, les bandits et les policiers. Le SMA simule l'interaction entre ces agents dans un environnement dynamique.
 
 ## Objectif
-L'objectif de ce projet est de démontrer la mise en place d'un SMA en Java pour simuler des interactions entre agents dans un environnement simulé.
+L'objectif de ce projet est de démontrer la mise en place d'un SMA en Java pour simuler des interactions entre agents dans un environnement simulé (ici l'extérieur du musé du Louvre).
 
 ## Agents
 ### 1. Civils
-Les civils sont des agents qui se déplacent de manière aléatoire dans l'environnement. Ils ont la capacité de détecter les bandits et de s'écarter de leur chemin s'ils se rapprochent trop.
+Les civils sont des agents qui se déplacent de manière aléatoire dans l'environnement. Ils ont la capacité de détecter les bandits. Ainsi que de s'échapper par une des 3 issues de secours mises a leur disposition.
 
 ### 2. Bandits
-Les bandits sont des agents qui agressent les civils lorsqu'ils s'approchent d'eux. Les bandits se déplacent également de manière aléatoire dans l'environnement.
+Les bandits sont des agents qui agressent les civils lorsqu'ils s'approchent d'eux. Les bandits se déplacent également de manière aléatoire dans l'environnement, en se dirigeant vers les civils quand ils les aperçoivent.
 
 ### 3. Policiers
-Les policiers sont des agents qui interviennent lorsqu'une agression entre un civil et un bandit est détectée. Les policiers se dirigent vers la scène de l'agression pour maintenir l'ordre.
+Les policiers sont des agents qui interviennent lorsqu'une agression entre un civil et un bandit est détectée. Les policiers se dirigent vers la scène de l'agression pour maintenir neutraliser les bandits.
 
 ## Utilisation
 Pour exécuter ce projet sur votre machine, suivez les étapes suivantes :
