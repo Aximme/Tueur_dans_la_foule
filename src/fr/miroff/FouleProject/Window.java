@@ -154,22 +154,10 @@ public class Window extends JFrame {
         buildings.add(new Building(480, 530, 100, 45));//bats ligne du bas
         buildings.add(new Building(580, 520, 150, 40));//bats ligne du bas (2)
         buildings.add(new Building(710, 485, 125, 60));//bats ligne du bas (gros bat) (3)
-        buildings.add(new Building(830, 502, 150, 30));//bats ligne du bas (ligne fine) (1)
-        buildings.add(new Building(900, 490, 150, 30));//bats ligne du bas (ligne fine) (2)
+        buildings.add(new Building(830, 502, 60, 30));//bats ligne du bas (ligne fine) (1)
+        buildings.add(new Building(965, 490, 60, 30));//bats ligne du bas (ligne fine) (2)
         buildings.add(new Building(1005, 390, 350, 120));//gros carre droite (1)
         buildings.add(new Building(1290, 375, 100, 120));//gros carre droite (2)
-    }
-
-    /*private void generateCircularBuildings() {
-        circularBuilding = new Building(183,347,40);//250 et 200 et 40
-        buildings.add(circularBuilding);
-    }*/
-
-
-    private void generateCircularBuildings() {
-        //circularBuilding = new Building(726,385,85); //TODO: Add some circular colisions (tree, fountain...)
-        //buildings.add(circularBuilding);
-
     }
 
     private boolean noMoreBandits() {
@@ -239,8 +227,7 @@ public class Window extends JFrame {
         setLocationRelativeTo(null);
 
         //TODO : remove after positioning buildings !!
-        generateBuildings();
-        //generateCircularBuildings();
+        //generateBuildings();
 
         backgroundImage = new ImageIcon("src/fr/miroff/FouleProject/img/louvre.png").getImage();
 
