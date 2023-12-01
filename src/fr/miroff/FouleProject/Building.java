@@ -29,10 +29,13 @@ public class Building {
 
     public void draw(Graphics g) {
         if (isCircular) {
-            g.setColor(Color.RED);//Couleur rouge pour visualiser, sera transparent dans le futur
+            Color transparent = new Color(0,0,0,0);
+            g.setColor(transparent);
             g.fillOval(x - radius, y - radius, 2 * radius, 2 * radius);
         } else {
-            g.setColor(Color.BLACK);
+            Color transparent = new Color(0,0,0,0);
+
+            g.setColor(transparent);
             g.fillRect(x, y, width, height);
         }
     }
