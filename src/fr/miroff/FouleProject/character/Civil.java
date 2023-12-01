@@ -96,7 +96,7 @@ public class Civil extends Character {
         if (nearestTarget != null) {
             moveTowardsPoint(nearestTarget.getX(), nearestTarget.getY());
 
-            int tolerance=30;
+            int tolerance=15;
 
             if (Math.abs(this.getX() - nearestTarget.getX()) <= tolerance &&
                     Math.abs(this.getY() - nearestTarget.getY()) <= tolerance) {
@@ -113,7 +113,7 @@ public class Civil extends Character {
 
     public List<Target> createTargets() {
         List<Target> targets = new ArrayList<>();
-        targets.add(new Target(507, 720));
+        targets.add(new Target(0, 560));
         targets.add(new Target(959, 720));
         targets.add(new Target(447, 54));
 

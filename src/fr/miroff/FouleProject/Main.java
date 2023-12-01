@@ -19,7 +19,7 @@ public class Main {
         buildingsReadyLatch.countDown();
     });
 
-        SwingUtilities.invokeLater(() -> mainWindow = new Window());
+        //SwingUtilities.invokeLater(() -> mainWindow = new Window());
 
         try(final ExecutorService executor = Executors.newFixedThreadPool(10)){
             while (true) {
