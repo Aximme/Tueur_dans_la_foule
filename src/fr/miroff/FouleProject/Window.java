@@ -139,7 +139,7 @@ public class Window extends JFrame {
     protected void generateBuildings() {
         buildings.clear();
         buildings.add(new Building(0, 0, 435, 60));//rectangle en haut a gauche avant evac
-        buildings.add(new Building(480, 47, 530, 60));//Barre batiments haut de evac a droite extreme
+        buildings.add(new Building(480, 0, 1030, 107));//Barre batiments haut de evac a droite extreme
         buildings.add(new Building(980, 47, 470, 140));//rectangle en haut a droite
         buildings.add(new Building(1385, 0, 70, 780));//barre droite extreme
         buildings.add(new Building(980, 595, 500, 350));//eau en bas a droite
@@ -149,8 +149,15 @@ public class Window extends JFrame {
         buildings.add(new Building(323, 210, 21));//gauche en haut
         buildings.add(new Building(319, 424, 21));//gauche en bas
         buildings.add(new Building(903, 298, 49));//rond point centre
-        //buildings.add(new Building(1077,214,140,130));//pyramide louvre
-        buildings.add(new Building(1090, 310, 140, 130));//rond point centre
+        buildings.add(new Building(1079,214,140,130));//pyramide louvre
+        buildings.add(new Building(1085, 290, 140, 45));//pyramide louvre (2)
+        buildings.add(new Building(480, 530, 100, 45));//bats ligne du bas
+        buildings.add(new Building(580, 520, 150, 40));//bats ligne du bas (2)
+        buildings.add(new Building(710, 485, 125, 60));//bats ligne du bas (gros bat) (3)
+        buildings.add(new Building(830, 502, 150, 30));//bats ligne du bas (ligne fine) (1)
+        buildings.add(new Building(900, 490, 150, 30));//bats ligne du bas (ligne fine) (2)
+        buildings.add(new Building(1005, 390, 350, 120));//gros carre droite (1)
+        buildings.add(new Building(1290, 375, 100, 120));//gros carre droite (2)
     }
 
     /*private void generateCircularBuildings() {
