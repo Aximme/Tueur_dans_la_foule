@@ -117,8 +117,8 @@ public class Character {
 
 
     protected boolean isCollidingWithBuilding(int pointX, int pointY, Building building) {
-        return pointX >= building.getX() - 10 && pointX <= building.getX() + building.getWidth() + 10 &&
-                pointY >= building.getY() - 10 && pointY <= building.getY() + building.getHeight() + 10;
+        return pointX >= building.getX() - 20 && pointX <= building.getX() + building.getWidth() + 20 &&
+                pointY >= building.getY() - 20 && pointY <= building.getY() + building.getHeight() + 20;
 
     }
     protected boolean isCollidingWithCircularBuilding(int pointX, int pointY, Building building) {
