@@ -21,30 +21,21 @@ public class Main {
 
         SwingUtilities.invokeLater(() -> mainWindow = new Window());
 
-
-
         try(final ExecutorService executor = Executors.newFixedThreadPool(10)){
             while (true) {
                 CountDownLatch latch = new CountDownLatch(Window.characters.size());
 
                 for (Character character : Window.characters) {
                     executor.submit(() -> {
-                        try {
-                            if (character instanceof Civil) {
-                                Civil civil = (Civil) character;
-                                List<Target> targets = civil.createTargets();
-                                civil.moveToNearestTarget(targets);
-                            } else {
-                                character.move(Window.characters);
-                            }
-                            mainWindow.handleCollisions(character);
-                            latch.countDown();
-                        } catch (Exception e) {
-                            handleUncaughtException(e);
+                        if (character instanceof Civil) {
+                            Civil civil = (Civil) character;
+                            List<Target> targets = civil.createTargets();
+                            civil.moveToNearestTarget(targets);
+                        } else {
+                            character.move(Window.characters);
                         }
                         mainWindow.handleCollisions(character);
                         latch.countDown();
-
                     });
                 }
 
@@ -64,9 +55,5 @@ public class Main {
                 }
             }
         }
-    }
-    private static void handleUncaughtException(Throwable throwable) {
-        System.err.println("Uncaught exception in thread: " + Thread.currentThread().getName());
-        throwable.printStackTrace();
     }
 }

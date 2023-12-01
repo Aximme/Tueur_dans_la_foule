@@ -10,12 +10,11 @@ public class Bandit extends Character {
         this.speed = chooseRandomSpeed();
     }
 
-
     public boolean attack(Civil civil) {
         if (!civil.escape()) {
-            return civil.hurt(); // Le Civil n'a pas réussi à s'échapper, il est mort.
+            return civil.hurt();
         }
         System.out.println("Le Civil s'est échappé !");
-        return false; // Le Civil a réussi à s'échapper, il n'est pas mort.
+        return false;
     }
 }
