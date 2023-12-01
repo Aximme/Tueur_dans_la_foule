@@ -60,4 +60,8 @@ public class Building {
     public void setRadius(int radius) {
         this.radius = radius;
     }
+    public boolean isCircular() {
+        return isCircular;
+    }
+
 }

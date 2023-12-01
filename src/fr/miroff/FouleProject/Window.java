@@ -100,21 +100,39 @@ public class Window extends JFrame {
         //TODO : Add timer for bandit spawn.
     }
 
-    private boolean isNearBuilding(int x, int y) { ///boolean qui va servir à savori si le personnage créer et assez loin d'un batiment
-        int distanceThreshold = 20; // possible d'ajuster la distance
-        for (Building building : buildings) {
-            int buildingX = building.getX();
-            int buildingY = building.getY();
-            int buildingWidth = building.getWidth();
-            int buildingHeight = building.getHeight();
+    private boolean isNearBuilding(int x, int y) {
+        int distanceThreshold = 20; // Possible d'ajuster la distance
 
-            if (x >= buildingX - distanceThreshold && x <= buildingX + buildingWidth + distanceThreshold &&
-                    y >= buildingY - distanceThreshold && y <= buildingY + buildingHeight + distanceThreshold) {
-                return true;
+        for (Building building : buildings) {
+            if (building.isCircular()) {
+                // Pour les bâtiments circulaires
+                int buildingX = building.getX();
+                int buildingY = building.getY();
+                int buildingRadius = building.getRadius();
+
+                double distance = Math.sqrt(Math.pow(x - buildingX, 2) + Math.pow(y - buildingY, 2));
+
+                if (distance <= buildingRadius + distanceThreshold) {
+                    return true;
+                }
+            } else {
+                // Pour les bâtiments rectangulaires
+                int buildingX = building.getX();
+                int buildingY = building.getY();
+                int buildingWidth = building.getWidth();
+                int buildingHeight = building.getHeight();
+
+                if (x >= buildingX - distanceThreshold && x <= buildingX + buildingWidth + distanceThreshold &&
+                        y >= buildingY - distanceThreshold && y <= buildingY + buildingHeight + distanceThreshold) {
+                    return true;
+                }
             }
         }
+
         return false;
     }
+
+
 
     public final ArrayList<Building> buildings = new ArrayList<>();
 
@@ -193,7 +211,7 @@ public class Window extends JFrame {
     }
     protected void handleCollisions(Character character) {
         final double MIN_DISTANCE_ATTACK = 10.0;
-        final double MIN_DISTANCE = 50.0;
+        final double MIN_DISTANCE = 4;
 
         for (Character otherCharacter : characters) {
             if (otherCharacter != character && character.distanceBetween(otherCharacter) < MIN_DISTANCE) {

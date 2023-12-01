@@ -57,46 +57,7 @@ public class Character {
         canMove = true;
     }
 
-    protected void avoidBuildings() {
-        int nextX = x + movementSpeed; // Déplacement vers la droite par défaut
-        int nextY = y;
 
-        // Vérifie les collisions avec les bâtiments pour éviter les obstacles
-        for (Building building : buildings) {
-            if (isCollidingWithBuilding(nextX, y, building)) {
-                // Si une collision est détectée, ajustez la direction du déplacement
-                if (Math.random() < 0.5) {
-                    // Déplacez-vous vers le haut
-                    nextX = x;
-                    nextY = y + movementSpeed;
-                } else {
-                    // Déplacez-vous vers le bas
-                    nextX = x;
-                    nextY = y - movementSpeed;
-                }
-                break; // Sortez de la boucle, ne vérifiez pas les autres bâtiments
-            }
-
-        }
-        for (Building circularBuilding : buildings) {
-            if (isCollidingWithCircularBuilding(nextX, y, circularBuilding)) {
-                // Si une collision avec un bâtiment circulaire est détectée,
-                // ajustez la direction du déplacement pour s'éloigner du cercle
-                double angleToCenter = Math.atan2(circularBuilding.getY() - y, circularBuilding.getX() - x);
-                int distanceToMove = circularBuilding.getRadius() + 1;  // +1 pour s'éloigner légèrement du bord
-                nextX = x + (int) (distanceToMove * Math.cos(angleToCenter));
-                nextY = y + (int) (distanceToMove * Math.sin(angleToCenter));
-                break; // Sortez de la boucle, ne vérifiez pas les autres bâtiments circulaires
-            }
-        }
-
-
-            // Applique le déplacement si pas de collision avec les bâtiments
-        if (nextX >= 0 && nextX < Window.WINDOW_WIDTH && nextY >= 0 && nextY < Window.WINDOW_HEIGHT - 100) {
-            x = nextX;
-            y = nextY;
-        }
-    }
 
 
     public void move(List<Character> characters) {
@@ -105,13 +66,15 @@ public class Character {
         }
 
         if (target()) {
+
+
             pathfinding();
         } else {
-            avoidBuildings();
+
+
             int nextX = getX();
             int nextY = getY();
 
-            // Logique de mouvement aléatoire
             if (Math.random() < 0.5) {
                 nextX += movementSpeed;
             } else {
@@ -124,7 +87,6 @@ public class Character {
                 nextY -= movementSpeed;
             }
 
-            // Vérifie les collisions avec les bâtiments
             boolean canMoveX = true;
             boolean canMoveY = true;
 
@@ -230,6 +192,7 @@ public class Character {
     public boolean target() {
         int indice = characterClosest();
 
+
         if (indice != -1) {
             return true;
         } else return false;
@@ -238,21 +201,17 @@ public class Character {
 
     public void pathfinding() {
 
-        // Cible la personne la plus proche
         int indice = characterClosest();
 
         if (indice != -1) {
             Character c = Window.characters.get(indice);
 
-            // Calcule les vecteurs de distance
             int distanceX = c.getX() - this.getX();
             int distanceY = c.getY() - this.getY();
 
-            // Logique d'évitement des bâtiments
             int nextX = x + (int) Math.signum(distanceX) * movementSpeed;
             int nextY = y + (int) Math.signum(distanceY) * movementSpeed;
 
-            // Vérifie les collisions avec les bâtiments
             boolean canMoveX = true;
             boolean canMoveY = true;
 
@@ -272,7 +231,6 @@ public class Character {
                 }
             }
 
-            // Applique les déplacements si pas de collision avec les bâtiments
             if (canMoveX && nextX >= 0 && nextX < Window.WINDOW_WIDTH) {
                 x = nextX;
             }
