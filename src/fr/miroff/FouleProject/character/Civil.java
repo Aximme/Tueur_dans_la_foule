@@ -33,9 +33,9 @@ public class Civil extends Character {
         int nextX;
 
         if (distanceX > 0) {
-            nextX = this.getX() + movementSpeed;
+            nextX = this.getX() + movementSpeed * speed;
         } else if (distanceX < 0) {
-            nextX = this.getX() - movementSpeed;
+            nextX = this.getX() - movementSpeed * speed;
         } else {
             nextX = this.getX();
         }
@@ -43,9 +43,9 @@ public class Civil extends Character {
         int nextY;
 
         if (distanceY > 0) {
-            nextY = this.getY() + movementSpeed;
+            nextY = this.getY() + movementSpeed * speed;
         } else if (distanceY < 0) {
-            nextY = this.getY() - movementSpeed;
+            nextY = this.getY() - movementSpeed * speed;
         } else {
             nextY = this.getY();
         }

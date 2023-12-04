@@ -1,9 +1,11 @@
 package fr.miroff.FouleProject.character;
+
 import fr.miroff.FouleProject.Building;
 import fr.miroff.FouleProject.Window;
+
 import java.util.Arrays;
-import java.util.Random;
 import java.util.List;
+import java.util.Random;
 
 public class Character {
     protected int health;
@@ -13,7 +15,7 @@ public class Character {
     protected int movementSpeed;
     Window window;
     private static final int vision = 500;
-    protected static final List<Integer> BASE_SPEEDS = Arrays.asList(1, 2, 3);
+    protected static final List<Integer> BASE_SPEEDS = Arrays.asList(1, 2);
     protected static final Random RAND = new Random();
     protected int speed;
 
@@ -58,9 +60,7 @@ public class Character {
     }
 
 
-
-
-    public void move(List<Character> characters) {
+    public void move() {
         if (!canMove) {
             return;
         }
@@ -76,15 +76,15 @@ public class Character {
             int nextY = getY();
 
             if (Math.random() < 0.5) {
-                nextX += movementSpeed;
+                nextX += movementSpeed * speed;
             } else {
-                nextX -= movementSpeed;
+                nextX -= movementSpeed * speed;
             }
 
             if (Math.random() < 0.5) {
-                nextY += movementSpeed;
+                nextY += movementSpeed * speed;
             } else {
-                nextY -= movementSpeed;
+                nextY -= movementSpeed * speed;
             }
 
             boolean canMoveX = true;
@@ -121,6 +121,7 @@ public class Character {
                 pointY >= building.getY() - 20 && pointY <= building.getY() + building.getHeight() + 20;
 
     }
+
     protected boolean isCollidingWithCircularBuilding(int pointX, int pointY, Building building) {
         int buildingX = building.getX();
         int buildingY = building.getY();
@@ -193,9 +194,7 @@ public class Character {
         int indice = characterClosest();
 
 
-        if (indice != -1) {
-            return true;
-        } else return false;
+        return indice != -1;
     }
 
 
@@ -209,8 +208,8 @@ public class Character {
             int distanceX = c.getX() - this.getX();
             int distanceY = c.getY() - this.getY();
 
-            int nextX = x + (int) Math.signum(distanceX) * movementSpeed;
-            int nextY = y + (int) Math.signum(distanceY) * movementSpeed;
+            int nextX = x + (int) Math.signum(distanceX) * movementSpeed * speed;
+            int nextY = y + (int) Math.signum(distanceY) * movementSpeed * speed;
 
             boolean canMoveX = true;
             boolean canMoveY = true;
@@ -222,12 +221,12 @@ public class Character {
                 if (isCollidingWithBuilding(x, nextY, building)) {
                     canMoveY = false;
                 }
-                if (isCollidingWithCircularBuilding(nextX,y,building)){
-                    canMoveX= false;
+                if (isCollidingWithCircularBuilding(nextX, y, building)) {
+                    canMoveX = false;
 
                 }
-                if(isCollidingWithCircularBuilding(x,nextY,building)){
-                    canMoveY= false;
+                if (isCollidingWithCircularBuilding(x, nextY, building)) {
+                    canMoveY = false;
                 }
             }
 
@@ -240,12 +239,9 @@ public class Character {
             }
 
 
-
-
-
-            }
         }
-
     }
+
+}
 
 

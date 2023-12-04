@@ -206,7 +206,7 @@ public class Window extends JFrame {
     }
     protected void handleCollisions(Character character) {
         final double MIN_DISTANCE_ATTACK = 10.0;
-        final double MIN_DISTANCE = 4;
+        final double MIN_DISTANCE = 50.0;
 
         for (Character otherCharacter : characters) {
             if (otherCharacter != character && character.distanceBetween(otherCharacter) < MIN_DISTANCE) {
@@ -338,7 +338,7 @@ public class Window extends JFrame {
         add(countersPanel, BorderLayout.SOUTH);
         setVisible(true);
 
-        summaryWindow = new SummaryWindow(this, banditDeaths, civilDeaths, copDeaths, escapedCount);
+        summaryWindow = new SummaryWindow(this, banditDeaths, civilDeaths, copDeaths);
     }
 
     private void drawCircles(Graphics g) {
@@ -387,21 +387,13 @@ public class Window extends JFrame {
             copDeaths++;
         }
 
-
         updateCounters();
 
-        if (noMoreBandits()) {
-            stopSimulation();
-        }
-
-        if (noMoreCivilandCops()) {
-            stopSimulation();
-        }
-        if (noMoreCivils()) {
+        if (noMoreBandits() || noMoreCivilandCops() || noMoreCivils()) {
             stopSimulation();
         }
     }
-    public void removeCivil(Civil civil) {     //TODO: Mettre à jour le compteur en live sur l"interface graphique.
+    public void removeCivil(Civil civil) {
         characters.remove(civil);
         escapedCount++;
         updateCounters();
@@ -427,7 +419,7 @@ public class Window extends JFrame {
         private final JLabel testLabel;
 
 
-        public SummaryWindow(Window mainFrame, int banditDeaths, int copDeaths, int civilDeaths, int escapedCount) {
+        public SummaryWindow(Window mainFrame, int banditDeaths, int copDeaths, int civilDeaths) {
             setTitle("Résumé de la Simulation");
             setSize(300, 150);
             setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
